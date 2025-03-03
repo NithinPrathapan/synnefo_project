@@ -1,5 +1,5 @@
-// models/User.js
 import mongoose from "mongoose";
+
 const userSchema = new mongoose.Schema(
   {
     clerkId: {
@@ -27,6 +27,7 @@ const userSchema = new mongoose.Schema(
       type: String,
     },
     role: {
+      type: String,
       enum: ["user", "admin", "seller"],
       default: "user",
     },
@@ -72,4 +73,4 @@ const userSchema = new mongoose.Schema(
 );
 
 const User = mongoose.model("User", userSchema);
-module.exports = User;
+export default User;

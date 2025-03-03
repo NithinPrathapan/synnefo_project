@@ -2,7 +2,6 @@ import React from "react";
 import { useUser } from "@clerk/clerk-react";
 
 const CustomProfileIcon = ({ setShowProfile, showProfile }) => {
-  console.log(showProfile);
   const { user } = useUser();
   return (
     <div

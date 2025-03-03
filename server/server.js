@@ -17,8 +17,16 @@ const clerkSecretKey = process.env.CLERK_SECRET_KEY;
 
 app.use(helmet());
 
-app.use(cors());
+// const corsOptions = {
+//   origin: "http://localhost:5173",
+//   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+//   credentials: true,
+//   optionsSuccessStatus: 204,
+// };
 
+// app.use(cors(corsOptions));
+
+app.use(cors());
 app.use(clerkMiddleware());
 
 app.use(express.json());
