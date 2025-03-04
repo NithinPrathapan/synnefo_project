@@ -30,7 +30,14 @@ const Navbar = () => {
         ) : (
           <SignInButton className="" />
         )}
-        {showProfile ? <UserDropDown /> : <> </>}
+        {showProfile ? (
+          <UserDropDown
+            showProfile={showProfile}
+            setShowProfile={setShowProfile}
+          />
+        ) : (
+          <> </>
+        )}
       </div>
     </div>
   );

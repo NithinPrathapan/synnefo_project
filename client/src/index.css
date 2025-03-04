@@ -1,4 +1,17 @@
 @import "tailwindcss";
 body {
-    overflow: scroll;
-  }
+  overflow: scroll;
+}
+
+input {
+  padding: 8px 8px;
+  outline: none;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+input:focus {
+  border: 1px solid #000;
+  transition: all ease 0.5s;
+  @apply ring-2 ring-black;
+}

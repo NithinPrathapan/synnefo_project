@@ -23,7 +23,13 @@ const ProfilePage = () => {
         <form className="flex flex-col gap-6" onSubmit={handleSubmit} action="">
           <div className="flex flex-col gap-3">
             <h2 className="text-2xl font-semibold">You here as?</h2>
-            <select name="" id="" value={role} onChange={handleRoleChange}>
+            <select
+              className="w-[90%] md:w-[80%] px-2 py-3 outline-none border border-[#ccc] rounded-md "
+              name=""
+              id=""
+              value={role}
+              onChange={handleRoleChange}
+            >
               <option value="recruiter">Recruiter</option>
               <option value="job_seeker">Job Seeker</option>
             </select>
@@ -31,32 +37,88 @@ const ProfilePage = () => {
 
           <div className="flex flex-col gap-3">
             <h2 className="text-2xl font-semibold">Address</h2>
-            <input type="text" placeholder="street" />
-            <input type="text" placeholder="city" />
-            <input type="text" placeholder="state" />
-            <input type="text" placeholder="postal code" />
+            <input
+              className="w-[90%] md:w-[80%]"
+              type="text"
+              placeholder="street"
+            />
+            <input
+              className="w-[90%] md:w-[80%]"
+              type="text"
+              placeholder="city"
+            />
+            <input
+              className="w-[90%] md:w-[80%]"
+              type="text"
+              placeholder="state"
+            />
+            <input
+              className="w-[90%] md:w-[80%]"
+              type="text"
+              placeholder="postal code"
+            />
           </div>
           {role === "recruiter" ? (
             <div className="flex flex-col gap-3">
               <h2 className="text-2xl font-semibold">Company Details</h2>
-              <input type="text" placeholder="name" />
-              <input type="text" placeholder="website" />
-              <input type="text" placeholder="loaction" />
-              <input type="text" placeholder="description" />
-              <input type="text" placeholder="Your position" />
-              <button className="bg-black text-white px-4 py-2 rounded-md cursor-pointer">
+              <input
+                className="w-[90%] md:w-[80%]"
+                type="text"
+                placeholder="name"
+              />
+              <input
+                className="w-[90%] md:w-[80%]"
+                type="text"
+                placeholder="website"
+              />
+              <input
+                className="w-[90%] md:w-[80%]"
+                type="text"
+                placeholder="loaction"
+              />
+              <input
+                className="w-[90%] md:w-[80%]"
+                type="text"
+                placeholder="description"
+              />
+              <input
+                className="w-[90%] md:w-[80%]"
+                type="text"
+                placeholder="Your position"
+              />
+              <button className="bg-black w-[90%] md:w-[80%] text-white px-4 py-2 rounded-md cursor-pointer">
                 See Posted Jobs
               </button>
             </div>
           ) : (
             <div className="flex flex-col gap-3">
-              <h2 className="text-2xl font-semibold">Company Details</h2>
-              <input type="text" placeholder="name" />
-              <input type="text" placeholder="website" />
-              <input type="text" placeholder="loaction" />
-              <input type="text" placeholder="description" />
-              <input type="text" placeholder="Your position" />
-              <button className="bg-black text-white px-4 py-2 rounded-md cursor-pointer">
+              <h2 className="text-2xl font-semibold">Fill Your Details</h2>
+              <input
+                className="w-[90%] md:w-[80%]"
+                type="text"
+                placeholder="name"
+              />
+              <input
+                className="w-[90%] md:w-[80%]"
+                type="text"
+                placeholder="website"
+              />
+              <input
+                className="w-[90%] md:w-[80%]"
+                type="text"
+                placeholder="loaction"
+              />
+              <input
+                className="w-[90%] md:w-[80%]"
+                type="text"
+                placeholder="description"
+              />
+              <input
+                className="w-[90%] md:w-[80%]"
+                type="text"
+                placeholder="Your position"
+              />
+              <button className="bg-black w-[90%] md:w-[80%] text-white px-4 py-2 rounded-md cursor-pointer">
                 See all applied jobs
               </button>
             </div>

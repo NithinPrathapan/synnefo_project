@@ -3,7 +3,7 @@ import React from "react";
 import { CgProfile } from "react-icons/cg";
 import { Link } from "react-router-dom";
 
-const UserDropDown = () => {
+const UserDropDown = ({ setShowProfile, showProfile }) => {
   const { user } = useUser();
   return (
     <div
@@ -12,7 +12,10 @@ const UserDropDown = () => {
     >
       <h1 className="font-semibold">Welcome {user.firstName} </h1>
       <Link to="/profile">
-        <button className="flex items-center  cursor-pointer justify-between gap-2">
+        <button
+          onClick={() => setShowProfile(false)}
+          className="flex items-center  cursor-pointer justify-between gap-2"
+        >
           <CgProfile size={25} /> Profile
         </button>
       </Link>
@@ -22,5 +25,5 @@ const UserDropDown = () => {
     </div>
   );
 };
-  
+
 export default UserDropDown;
