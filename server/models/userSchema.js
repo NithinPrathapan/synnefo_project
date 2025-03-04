@@ -28,46 +28,9 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ["user", "admin", "seller"],
+      enum: ["job_seeker", "recruiter"],
       default: "user",
     },
-    addresses: [
-      {
-        street: String,
-        city: String,
-        state: String,
-        country: String,
-        postalCode: String,
-        isDefault: {
-          type: Boolean,
-          default: false,
-        },
-      },
-    ],
-    wishlist: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Product",
-      },
-    ],
-    cart: [
-      {
-        product: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Product",
-        },
-        quantity: {
-          type: Number,
-          default: 1,
-        },
-      },
-    ],
-    orders: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Order",
-      },
-    ],
   },
   { timestamps: true }
 );

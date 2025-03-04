@@ -15,7 +15,7 @@ const CustomProfileIcon = ({ setShowProfile, showProfile }) => {
         src={user.imageUrl}
         alt="usericon"
       />
-      <p>Welcome {user.firstName}</p>
+    
     </div>
   );
 };

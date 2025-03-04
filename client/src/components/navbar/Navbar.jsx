@@ -7,21 +7,22 @@ import {
   useUser,
 } from "@clerk/clerk-react";
 import CustomProfileIcon from "../custom-user-icon/CustomProfileIcon";
-import RegisterProfile from "../regiser-profile/RegisterProfile";
+import UserDropDown from "../regiser-profile/UserDropDown";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const { isSignedIn, user, isLoaded } = useUser();
   const [showProfile, setShowProfile] = useState(false);
 
-  console.log(user);
-
   return (
-    <div className="flex items-center justify-between h-16 bg-amber-300 text-black px-12">
-      <div>
-        <h1 className="text-2xl font-bold">Ecom</h1>
-      </div>
+    <div className="flex items-center justify-between h-16  text-black px-12 border-b border-b-slate-600 shadow-lg">
+      <Link to="/">
+        <div>
+          <h1 className="text-2xl font-bold">JobX</h1>
+        </div>
+      </Link>
       <div className="relative">
-        {isSignedIn ? (
+        {isSignedIn && isLoaded ? (
           <CustomProfileIcon
             setShowProfile={setShowProfile}
             showProfile={showProfile}
@@ -29,7 +30,7 @@ const Navbar = () => {
         ) : (
           <SignInButton className="" />
         )}
-        {showProfile ? <RegisterProfile /> : <> </>}
+        {showProfile ? <UserDropDown /> : <> </>}
       </div>
     </div>
   );
