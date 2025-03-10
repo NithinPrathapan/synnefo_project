@@ -26,6 +26,13 @@ const userSchema = new mongoose.Schema(
     phoneNumber: {
       type: String,
     },
+    address: {
+      street: String,
+      city: String,
+      state: String,
+      country: String,
+      zipCode: String,
+    },
     role: {
       type: String,
       enum: ["job_seeker", "user", "recruiter"],

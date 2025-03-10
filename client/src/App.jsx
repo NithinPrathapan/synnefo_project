@@ -24,10 +24,16 @@ const App = () => {
   };
 
   useEffect(() => {
-    if (isLoaded && isSignedIn) {
+    if (isLoaded && isSignedIn && userData === null) {
       addUserData();
     }
-  }, [isLoaded, isSignedIn]);
+  }, [isLoaded, isSignedIn, userData]);
+
+  useEffect(() => {
+    if (userData && userData !== null && userData.role === "user") {
+      navigate("/profile");
+    }
+  }, [navigate, userData]);
 
   // function add user data to the database
   async function addUserData() {
@@ -40,7 +46,6 @@ const App = () => {
         body: JSON.stringify(formData),
       });
       const data = await response.json();
-      console.log(data?.user);
       dispatch(setUser(data?.user));
     } catch (error) {
       console.log(error.message);

@@ -5,6 +5,8 @@ import helmet from "helmet";
 import cors from "cors";
 import { clerkClient, requireAuth, getAuth } from "@clerk/express";
 import authRoutes from "./routes/authRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
+import multer from "multer";
 
 import { clerkMiddleware } from "@clerk/express";
 
@@ -32,12 +34,16 @@ app.use(clerkMiddleware());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+
+
+
 app.get("/", (req, res) => {
   console.log("fn call");
   res.send("API is running");
 });
 
 app.use("/api/auth", authRoutes);
+app.use("/api/user", userRoutes);
 
 const PORT = process.env.PORT || 5000;
 

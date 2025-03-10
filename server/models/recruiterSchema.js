@@ -1,26 +1,16 @@
-import mongoose, { mongo } from "mongoose";
+import mongoose from "mongoose";
 
 const recruiterSchema = new mongoose.Schema({
+  user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   companyDetails: {
-    name: {
-      type: String,
-      required: true,
-    },
+    companyName: { type: String },
     website: String,
     location: String,
     description: String,
   },
-  postition: {
-    type: String,
-    required: true,
-  },
-  createdJobs: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Job",
-    },
-  ],
+  position: { type: String },
+  createdJobs: [{ type: mongoose.Schema.Types.ObjectId, ref: "Job" }],
 });
 
-const Recruiter = new mongoose.model("Recruiter", recruiterSchema);
+const Recruiter = mongoose.model("Recruiter", recruiterSchema);
 export default Recruiter;
