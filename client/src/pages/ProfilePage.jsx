@@ -4,20 +4,22 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 const ProfilePage = () => {
-  const [role, setRole] = React.useState("recruiter");
+  const [role, setRole] = React.useState("");
   const [resume, setResume] = useState(null);
+
+  console.log(role);
 
   console.log(resume);
   const [upDatedData, setUpDatedData] = React.useState({
     country: "",
     state: "",
     city: "",
-    role: role,
     companyName: "",
     companyWebsite: "",
     companyLocation: "",
     companyDescription: "",
     position: "",
+    resume: resume,
   });
   const [errors, setErrors] = React.useState({});
 
@@ -68,10 +70,6 @@ const ProfilePage = () => {
     return Object.keys(tempErrors).length === 0;
   };
 
-  const handleRoleChange = (e) => {
-    setRole(e.target.value);
-    setErrors({});
-  };
   const handleChange = (e) => {
     if (e.target.type === "file") {
       setResume(e.target.files[0]);
@@ -79,7 +77,7 @@ const ProfilePage = () => {
       setUpDatedData({
         ...upDatedData,
         [e.target.name]: e.target.value,
-        resume: resume,
+        file: resume,
       });
     }
   };
@@ -90,22 +88,15 @@ const ProfilePage = () => {
     for (const key in upDatedData) {
       formData.append(key, upDatedData[key]);
     }
+
     formData.append("role", role);
-    if (resume) {
-      formData.append("resume", resume);
-    }
 
     try {
       const res = await axios.post(
         `http://localhost:4000/api/user/update/${userData._id}`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
+        formData
       );
-      console.log(res.data);
+      console.log(res?.data);
     } catch (error) {
       console.log("error:", error);
     }
@@ -124,8 +115,9 @@ const ProfilePage = () => {
               name=""
               id=""
               value={role}
-              onChange={handleRoleChange}
+              onChange={(e) => setRole(e.target.value)}
             >
+              <option value="">Select role</option>
               <option value="recruiter">Recruiter</option>
               <option value="job_seeker">Job Seeker</option>
             </select>
@@ -251,7 +243,7 @@ const ProfilePage = () => {
                   onChange={handleChange}
                   className="w-full"
                   type="file"
-                  name="resume"
+                  name="file"
                   id="resume"
                 />
                 {errors.resume && (
