@@ -18,7 +18,7 @@ const Navbar = () => {
     <div className="flex items-center justify-between h-16  text-black px-12 border-b border-b-slate-600 shadow-lg">
       <Link to="/">
         <div>
-          <h1 className="text-2xl font-bold">JobX</h1>
+        <h1 className="text-2xl font-bold">JobX</h1>
         </div>
       </Link>
       <div className="relative">

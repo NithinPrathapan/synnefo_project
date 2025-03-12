@@ -4,22 +4,24 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 const ProfilePage = () => {
-  const [role, setRole] = React.useState("");
+  const { userData } = useSelector((state) => state.auth);
+
+  const [role, setRole] = React.useState(userData?.role || null);
   const [resume, setResume] = useState(null);
 
-  console.log(role);
-
-  console.log(resume);
+  console.log(role, "role changed");
   const [upDatedData, setUpDatedData] = React.useState({
-    country: "",
-    state: "",
-    city: "",
-    companyName: "",
-    companyWebsite: "",
-    companyLocation: "",
-    companyDescription: "",
-    position: "",
-    resume: resume,
+    country: userData?.address?.country || "",
+    state: userData?.address?.state || "",
+    city: userData?.address?.city || "",
+    companyName: userData?.recruiter?.companyName || "",
+    companyWebsite: userData?.recruiter?.companyWebsite || "",
+    companyLocation: userData?.recruiter?.companyLocation || "",
+    companyDescription: userData?.recruiter?.companyDescription || "",
+    position: userData?.position || "",
+    experience: userData?.jobSeeker?.experience || "",
+    skills: userData?.jobSeeker?.skills || [],
+    description: userData?.jobSeeker?.description || "",
   });
   const [errors, setErrors] = React.useState({});
 
@@ -28,7 +30,6 @@ const ProfilePage = () => {
   const diapatch = useDispatch();
 
   const { isSignedIn, user, isLoaded } = useUser();
-  const { userData } = useSelector((state) => state.auth);
   useEffect(() => {
     if (!isLoaded && !isSignedIn) {
       navigate("/");
@@ -83,13 +84,16 @@ const ProfilePage = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(upDatedData);
+    console.log(upDatedData, "before the form submisstion");
     const formData = new FormData();
     for (const key in upDatedData) {
       formData.append(key, upDatedData[key]);
     }
 
     formData.append("role", role);
+    if (role === "job_seeker") {
+      formData.append("file", resume);
+    }
 
     try {
       const res = await axios.post(
@@ -114,10 +118,10 @@ const ProfilePage = () => {
               className="w-[90%] md:w-[80%] px-2 py-3 outline-none border border-[#ccc] rounded-md "
               name=""
               id=""
-              value={role}
+              value={upDatedData.role}
               onChange={(e) => setRole(e.target.value)}
             >
-              <option value="">Select role</option>
+              <option>Select role</option>
               <option value="recruiter">Recruiter</option>
               <option value="job_seeker">Job Seeker</option>
             </select>
@@ -131,7 +135,7 @@ const ProfilePage = () => {
               className="w-[90%] md:w-[80%]"
               name="country"
               placeholder="country"
-              value={userData?.country}
+              value={upDatedData.country}
             />
             {errors.country && (
               <p className="text-red-500 text-sm">{errors.country}</p>
@@ -142,7 +146,7 @@ const ProfilePage = () => {
               className="w-[90%] md:w-[80%]"
               name="state"
               placeholder="state"
-              value={userData?.state}
+              value={upDatedData.state}
             />
             {errors.country && (
               <p className="text-red-500 text-sm">{errors.country}</p>
@@ -153,7 +157,7 @@ const ProfilePage = () => {
               className="w-[90%] md:w-[80%]"
               name="city"
               placeholder="city"
-              value={userData?.city}
+              value={upDatedData.city}
             />
             {errors.city && (
               <p className="text-red-500 text-sm">{errors.city}</p>
@@ -168,7 +172,7 @@ const ProfilePage = () => {
                 type="text"
                 name="companyName"
                 placeholder="Company Name"
-                value={userData?.companyName}
+                value={upDatedData.companyName}
               />
               {errors.companyName && (
                 <p className="text-red-500 text-sm">{errors.companyName}</p>
@@ -179,7 +183,7 @@ const ProfilePage = () => {
                 type="text"
                 name="companyWebsite"
                 placeholder="Company Website"
-                value={userData?.companyWebsite}
+                value={upDatedData.companyWebsite}
               />
               {errors.companyWebsite && (
                 <p className="text-red-500 text-sm">{errors.companyWebsite}</p>
@@ -190,7 +194,7 @@ const ProfilePage = () => {
                 type="text"
                 name="companyLocation"
                 placeholder="Company Location"
-                value={userData?.companyLocation}
+                value={upDatedData.companyLocation}
               />
               {errors.companyLocation && (
                 <p className="text-red-500 text-sm">{errors.companyLocation}</p>
@@ -201,7 +205,7 @@ const ProfilePage = () => {
                 type="text"
                 name="companyDescription"
                 placeholder="Company Description"
-                value={userData?.companyDescription}
+                value={upDatedData.companyDescription}
               />
               {errors.companyDescription && (
                 <p className="text-red-500 text-sm">
@@ -214,7 +218,7 @@ const ProfilePage = () => {
                 type="text"
                 name="position"
                 placeholder="Your Position"
-                value={userData?.position}
+                value={upDatedData.position}
               />
               {errors.position && (
                 <p className="text-red-500 text-sm">{errors.position}</p>
@@ -232,7 +236,7 @@ const ProfilePage = () => {
                 type="text"
                 name="experience"
                 placeholder="Experience in years"
-                value={userData?.experience}
+                value={upDatedData.experience}
               />
               {errors.experience && (
                 <p className="text-red-500 text-sm">{errors.experience}</p>
@@ -249,6 +253,7 @@ const ProfilePage = () => {
                 {errors.resume && (
                   <p className="text-red-500 text-sm">{errors.resume}</p>
                 )}
+                <p>{upDatedData?.resume}</p>
               </div>
               <input
                 onChange={handleChange}
@@ -256,7 +261,7 @@ const ProfilePage = () => {
                 type="text"
                 name="skills"
                 placeholder="Your Skills (comma-separated)"
-                value={userData?.skills}
+                value={upDatedData.skills}
               />
               {errors.skills && (
                 <p className="text-red-500 text-sm">{errors.skills}</p>
@@ -267,7 +272,7 @@ const ProfilePage = () => {
                 type="text"
                 name="description"
                 placeholder="Description"
-                value={userData?.description}
+                value={upDatedData.description}
               />
               {errors.description && (
                 <p className="text-red-500 text-sm">{errors.description}</p>

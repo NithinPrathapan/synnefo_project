@@ -15,11 +15,13 @@ export const signUp = async (req, res) => {
         imageUrl,
       });
       await newUser.save();
-      return res.status(201).json({ message: "User created successfully",user:newUser });
+      return res
+        .status(201)
+        .json({ message: "User created successfully", user: newUser });
     } else {
       return res
         .status(400)
-        .json({ message: "User already exists", user:user });
+        .json({ message: "User already exists", user: user });
     }
   } catch (error) {
     console.log(error, "error from the database");

@@ -5,7 +5,7 @@ import User from "../models/userSchema.js";
 export const updateProfile = async (req, res) => {
   console.log("reached updateProfile fn");
   const { id } = req.params;
-  console.log(req.file);
+
   const {
     role,
     country,
@@ -21,8 +21,8 @@ export const updateProfile = async (req, res) => {
     description,
   } = req.body;
 
-  console.log(req.body);
-  console.log(role);
+  // console.log(req.body,'req.body ');
+  // console.log(role);
 
   try {
     const user = await User.findById(id);
@@ -32,7 +32,7 @@ export const updateProfile = async (req, res) => {
         .json({ success: false, message: "User not found" });
     }
 
-    // user.address.country = country;
+    user.address.country = country;
     user.address.state = state;
     // user.address.street = street;
     user.address.city = city;
@@ -73,7 +73,7 @@ export const updateProfile = async (req, res) => {
     if (jobSeekerExist) {
       jobSeekerExist.experience = experience;
       jobSeekerExist.skills = skills;
-      jobSeekerExist.resume = req.file.filename;
+      // jobSeekerExist.resume = req.file.filename;
       jobSeekerExist.description = description;
       await jobSeekerExist.save();
       return res.status(200).json({
@@ -102,6 +102,7 @@ export const updateProfile = async (req, res) => {
 };
 
 export const getUserDetails = async (req, res) => {
+  console.log("inside the get user details function");
   try {
     const { id } = req.params;
     const user = await User.findOne({ clerkId: id }).lean();
@@ -112,7 +113,7 @@ export const getUserDetails = async (req, res) => {
         .json({ success: false, message: "User not found" });
     }
     const userData = { ...user };
-    console.log(userData, "from the backend");
+    // console.log(userData, "from the backend");
     if (user.role === "job_seeker") {
       console.log("inisde the job seeker fun");
       const jobSeeker = await JobSeeker.findOne({ user: user._id }).lean();
@@ -122,16 +123,21 @@ export const getUserDetails = async (req, res) => {
           .json({ success: false, message: "Job Seeker not found" });
       }
 
-      console.log("job seeker", jobSeeker);
+      // console.log("job seeker", jobSeeker);
       userData.jobSeeker = jobSeeker;
-      console.log(
-        userData,
-        "from the backend ================================================================="
-      );
+      // console.log(
+      //   userData,
+      //   "from the backend ================================================================="
+      // );
       return res.status(200).json({ success: true, user: userData });
     }
     if (user.role === "recruiter") {
-      const recruiter = await Recruiter.findOne({ user: id }).lean();
+      // console.log("insinde the recruiter role");
+      const recruiter = await Recruiter.findOne({ user: user._id }).lean();
+      // console.log(
+      //   recruiter,
+      //   "from teh recruiter ================================================================="
+      // );
       if (!recruiter) {
         return res
           .status(404)

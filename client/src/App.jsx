@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Home from "./pages/Home";
 import { setUser } from "./store/authSlice";
 import axios from "axios";
+import Dashboard from "./pages/Dashboard";
 
 const App = () => {
   const { user, isLoaded, isSignedIn } = useUser();
@@ -27,6 +28,8 @@ const App = () => {
   useEffect(() => {
     if (isLoaded && isSignedIn && userData === null) {
       addUserData();
+
+      fetchUserData();
     }
   }, [isLoaded, isSignedIn, userData, navigate]);
 
@@ -74,14 +77,18 @@ const App = () => {
   };
 
   return (
-    <div className="">
+    <div className="relative">
       <Navbar />
 
       <div className="h-screen overflow-hidden sm:px-4 md:px-8 lg:px-16 xl:px-32">
         <Routes>
           <Route path="/" element={<Home />} />
 
-          <Route path="/profile" element={<ProfilePage />} />
+          {(userData && userData?.role === "user") || userData?.role === "" ? (
+            <Route path="/profile" element={<ProfilePage />} />
+          ) : (
+            <Route path="/profile" element={<Dashboard />} />
+          )}
         </Routes>
       </div>
     </div>
