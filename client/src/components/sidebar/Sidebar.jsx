@@ -33,7 +33,7 @@ const Sidebar = ({ openSidebar, setOpenSideBar }) => {
       label: "View saved Jobs",
       icon: <BookIcon className="hover:text-amber-200" color="" />,
     },
-  {
+    {
       label: "Shortlisted by recruiter",
       icon: (
         <KeyboardArrowRightIcon className="hover:text-amber-200" color="" />

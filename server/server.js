@@ -34,9 +34,6 @@ app.use(clerkMiddleware());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
-
-
 app.get("/", (req, res) => {
   console.log("fn call");
   res.send("API is running");
