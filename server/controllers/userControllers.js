@@ -102,7 +102,7 @@ export const updateProfile = async (req, res) => {
 };
 
 export const getUserDetails = async (req, res) => {
-  console.log("inside the get user details function");
+  // console.log("inside the get user details function");
   try {
     const { id } = req.params;
     const user = await User.findOne({ clerkId: id }).lean();
@@ -115,7 +115,7 @@ export const getUserDetails = async (req, res) => {
     const userData = { ...user };
     // console.log(userData, "from the backend");
     if (user.role === "job_seeker") {
-      console.log("inisde the job seeker fun");
+      // console.log("inisde the job seeker fun");
       const jobSeeker = await JobSeeker.findOne({ user: user._id }).lean();
       if (!jobSeeker) {
         return res
@@ -162,3 +162,5 @@ export const getUserDetails = async (req, res) => {
       .json({ success: false, message: "Internal server error" });
   }
 };
+
+
