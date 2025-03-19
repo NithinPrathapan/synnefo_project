@@ -13,13 +13,27 @@ input {
   border: 1px solid #ccc;
   border-radius: 5px;
 }
+.no-style {
+  border: none;
+}
+
+select {
+  padding: 8px 8px;
+  outline: none;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
 
 input:focus {
   border: 1px solid #000;
   transition: all ease 0.5s;
   @apply ring-2 ring-black;
 }
-
+.no-style:focus {
+  border: none;
+  transition: all ease 0.5s;
+  @apply ring-0;
+}
 :root {
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);

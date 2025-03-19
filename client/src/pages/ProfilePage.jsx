@@ -8,17 +8,18 @@ const ProfilePage = () => {
 
   const [role, setRole] = React.useState(userData?.role || null);
   const [resume, setResume] = useState(null);
-
+  const [updateButton, setUpdateButton] = useState(false);
+  console.log(userData);
   console.log(role, "role changed");
   const [upDatedData, setUpDatedData] = React.useState({
     country: userData?.address?.country || "",
     state: userData?.address?.state || "",
     city: userData?.address?.city || "",
-    companyName: userData?.recruiter?.companyName || "",
-    companyWebsite: userData?.recruiter?.companyWebsite || "",
-    companyLocation: userData?.recruiter?.companyLocation || "",
-    companyDescription: userData?.recruiter?.companyDescription || "",
-    position: userData?.position || "",
+    companyName: userData?.recruiter?.companyDetails?.companyName || "",
+    companyWebsite: userData?.recruiter?.companyDetails?.website || "",
+    companyLocation: userData?.recruiter?.companyDetails?.location || "",
+    companyDescription: userData?.recruiter?.companyDetails?.description || "",
+    position: userData?.recruiter?.position || "",
     experience: userData?.jobSeeker?.experience || "",
     skills: userData?.jobSeeker?.skills || [],
     description: userData?.jobSeeker?.description || "",
@@ -35,6 +36,27 @@ const ProfilePage = () => {
       navigate("/");
     }
   });
+
+  const fileName = encodeURIComponent(userData?.jobSeeker?.resume);
+  console.log(fileName);
+
+  async function downloadResume() {
+    try {
+      window.location.href = `http://localhost:4000/uploads/${fileName}`;
+    } catch (error) {
+      console.log(error, "failed to download resume");
+    }
+  }
+
+  const data = userData?.jobSeeker?.resume.split("-")[0];
+  console.log(data);
+
+  // async function fettchFile() {
+  //   const response = await axios.get(
+  //     `http://localhost:4000/${userData?.jobSeeker?.resume}`
+  //   );
+  //   console.log(response, "kskdfhkhdskf");
+  // }
 
   const validateForm = () => {
     let tempErrors = {};
@@ -72,6 +94,7 @@ const ProfilePage = () => {
   };
 
   const handleChange = (e) => {
+    console.log(updateButton);
     if (e.target.type === "file") {
       setResume(e.target.files[0]);
     } else {
@@ -81,8 +104,10 @@ const ProfilePage = () => {
         file: resume,
       });
     }
+    setUpdateButton(true);
   };
   const handleSubmit = async (e) => {
+    setUpdateButton(false);
     e.preventDefault();
     console.log(upDatedData, "before the form submisstion");
     const formData = new FormData();
@@ -113,18 +138,22 @@ const ProfilePage = () => {
         <h1 className="text-2xl font-semibold uppercase">Update Profile</h1>
         <form className="flex flex-col gap-6" onSubmit={handleSubmit} action="">
           <div className="flex flex-col gap-3">
-            <h2 className="text-2xl font-semibold">You here as?</h2>
-            <select
-              className="w-[90%] md:w-[80%] px-2 py-3 outline-none border border-[#ccc] rounded-md "
-              name=""
-              id=""
-              value={upDatedData.role}
-              onChange={(e) => setRole(e.target.value)}
-            >
-              <option>Select role</option>
-              <option value="recruiter">Recruiter</option>
-              <option value="job_seeker">Job Seeker</option>
-            </select>
+            <h2 className="text-2xl font-semibold">
+              {userData && userData.role ? "Role" : "Select Role"}
+            </h2>
+            {userData && userData?.role ? (
+              <p className="uppercase w-[400px]  ">{userData.role}</p>
+            ) : (
+              <select
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+                name="role"
+                id=""
+              >
+                <option value="recruiter">Recruiter</option>
+                <option value="job_seeker">Job Seeker</option>
+              </select>
+            )}
           </div>
 
           <div className="flex flex-col gap-3">
@@ -163,7 +192,7 @@ const ProfilePage = () => {
               <p className="text-red-500 text-sm">{errors.city}</p>
             )}
           </div>
-          {role === "recruiter" && role !== "" ? (
+          {role === "recruiter" ? (
             <div className="flex flex-col gap-3">
               <h2 className="text-2xl font-semibold">Company Details</h2>
               <input
@@ -236,7 +265,7 @@ const ProfilePage = () => {
                 type="text"
                 name="experience"
                 placeholder="Experience in years"
-                value={upDatedData.experience}
+                value={upDatedData?.experience}
               />
               {errors.experience && (
                 <p className="text-red-500 text-sm">{errors.experience}</p>
@@ -254,6 +283,25 @@ const ProfilePage = () => {
                   <p className="text-red-500 text-sm">{errors.resume}</p>
                 )}
                 <p>{upDatedData?.resume}</p>
+
+                {userData && userData?.jobSeeker?.resume && (
+                  <div className="flex  items-center  gap-6 relative  relativeborder border">
+                    <div className="w-[40px] h-[60px] text-white  bg-[#F80707] flex items-center justify-center">
+                      Pdf
+                    </div>
+                    <div className="flex flex-col ">
+                      <h1>{data}</h1>
+                      <button
+                        type="button"
+                        onClick={downloadResume}
+                        className=" cursor-pointer   absolute right-12 text-blue-600 "
+                        href=""
+                      >
+                        download
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
               <input
                 onChange={handleChange}
@@ -286,16 +334,16 @@ const ProfilePage = () => {
             </div>
           )}
           <button
+            onClick={handleSubmit}
+            disabled={!updateButton}
             type="submit"
-            className="bg-black w-[90%] md:w-[80%] text-white px-4 py-2 rounded-md cursor-pointer"
+            className={`bg-black w-[90%] md:w-[80%] text-white px-4 py-2 rounded-md cursor-pointer ${
+              !updateButton && "opacity-50 cursor-not-allowed"
+            }`}
           >
             Update Profile
           </button>
         </form>
-      </div>
-      <div className="w-full">
-        {/* right section */}
-        right section
       </div>
     </div>
   );

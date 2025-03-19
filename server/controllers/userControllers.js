@@ -21,6 +21,8 @@ export const updateProfile = async (req, res) => {
     description,
   } = req.body;
 
+  console.log(companyName);
+  console.log(req.file);
   // console.log(req.body,'req.body ');
   // console.log(role);
 
@@ -43,7 +45,7 @@ export const updateProfile = async (req, res) => {
     if (role === "recruiter") {
       const recruiterExist = await Recruiter.findOne({ user: id });
       if (recruiterExist) {
-        recruiterExist.companyDetails.name = companyName;
+        recruiterExist.companyDetails.companyName = companyName;
         recruiterExist.companyDetails.website = companyWebsite;
         recruiterExist.companyDetails.location = companyLocation;
         recruiterExist.companyDetails.description = companyDescription;
@@ -73,7 +75,7 @@ export const updateProfile = async (req, res) => {
     if (jobSeekerExist) {
       jobSeekerExist.experience = experience;
       jobSeekerExist.skills = skills;
-      // jobSeekerExist.resume = req.file.filename;
+      jobSeekerExist.resume = req.file.filename;
       jobSeekerExist.description = description;
       await jobSeekerExist.save();
       return res.status(200).json({
@@ -162,5 +164,3 @@ export const getUserDetails = async (req, res) => {
       .json({ success: false, message: "Internal server error" });
   }
 };
-
-

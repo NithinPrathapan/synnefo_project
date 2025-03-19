@@ -1,13 +1,15 @@
 import React, { useEffect } from "react";
 import { SignOutButton, useUser } from "@clerk/clerk-react";
 import Navbar from "./components/navbar/Navbar";
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import ProfilePage from "./pages/ProfilePage";
 import { useDispatch, useSelector } from "react-redux";
 import Home from "./pages/Home";
 import { setUser } from "./store/authSlice";
 import axios from "axios";
 import Dashboard from "./pages/Dashboard";
+import CreateJob from "./pages/CreateJob";
+import ViewProfile from "./pages/ViewProfile";
 
 const App = () => {
   const { user, isLoaded, isSignedIn } = useUser();
@@ -69,7 +71,6 @@ const App = () => {
         "http://localhost:4000/api/user/userdetails/" + user.id
       );
 
-      console.log(response.data);
       return response.data.user;
     } catch (error) {
       console.log("error fetching user data", error);
@@ -80,15 +81,23 @@ const App = () => {
     <div className="relative">
       <Navbar />
 
-      <div className="h-screen overflow-hidden sm:px-4 md:px-8 lg:px-16 xl:px-32">
+      <div className="h-screen overflow-hidden ">
         <Routes>
           <Route path="/" element={<Home />} />
-
-          {(userData && userData?.role === "user") || userData?.role === "" ? (
-            <Route path="/profile" element={<ProfilePage />} />
-          ) : (
-            <Route path="/profile" element={<Dashboard />} />
-          )}
+          <Route
+            path="/profile"
+            element={
+              userData?.role === "user" ? (
+                <ProfilePage />
+              ) : (
+                <Navigate to={"/dashboard"} />
+              )
+            }
+          />
+          <Route path="/dashboard" element={<Dashboard />}>
+            <Route path="createjob" element={<CreateJob />} />
+            <Route path="viewprofile" element={<ViewProfile />} />
+          </Route>
         </Routes>
       </div>
     </div>
