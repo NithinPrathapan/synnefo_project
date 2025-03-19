@@ -3,11 +3,9 @@ import connectDB from "./database/connectDB.js";
 import dotenv from "dotenv";
 import helmet from "helmet";
 import cors from "cors";
-import { clerkClient, requireAuth, getAuth } from "@clerk/express";
 import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import recruiterRoutes from "./routes/recruiterRoutes.js";
-import multer from "multer";
 import path from "path";
 import { fileURLToPath } from "url";
 
