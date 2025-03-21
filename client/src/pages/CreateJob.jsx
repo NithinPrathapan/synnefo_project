@@ -7,7 +7,9 @@ const CreateJob = () => {
   console.log(userData);
   const [skillSet, setSkillSet] = useState([]);
   const [skill, setSkill] = useState("");
+  const [thumbnail, setThumbnail] = useState(null);
 
+  console.log(thumbnail);
   const [formdata, setFormdata] = useState({
     title: "",
     description: "",
@@ -17,19 +19,21 @@ const CreateJob = () => {
     vaccancy: 0,
     applicationDeadLine: "",
     jobType: "",
-    thumbnail: "",
   });
 
-  console.log(formdata);
+  console.log(formdata, "");
   useEffect(() => {
     formdata.skillsRequired = skillSet;
   }, [skillSet]);
 
   const handleChange = (e) => {
-    if (e.target.file) {
-      setFormdata({ ...formdata, thumbnail: e.target.files[0] });
+    if (e.target.type === "file") {
+      setThumbnail(e.target.files[0]);
     }
-    setFormdata({ ...formdata, [e.target.name]: e.target.value });
+    setFormdata({
+      ...formdata,
+      [e.target.name]: e.target.value,
+    });
   };
   const handleAddToSkillSet = (e) => {
     e.preventDefault();
@@ -44,25 +48,33 @@ const CreateJob = () => {
     e.preventDefault();
     // form validation and alert all fields are required before submitting
     if (
-      formdata.title === "" ||
-      formdata.description === "" ||
-      formdata.location === "" ||
-      formdata.skillsRequired.length === 0 ||
-      formdata.salary === 0 ||
-      formdata.vaccancy === 0 ||
-      formdata.applicationDeadLine === "" ||
-      formdata.jobType === "" ||
-      formdata.thumbnail === ""
+      Object.values(formdata).some(
+        (value) =>
+          value === "" ||
+          value === 0 ||
+          formdata.skillsRequired.length === 0 ||
+          thumbnail == null
+      )
     ) {
       alert("All fields are required");
       return;
-    } else {
-      const response = await axios.post(
-        "http://localhost:4000/api/recruiter/createjob",
-        formdata
-      );
-      console.log(response);
     }
+
+    const formData = new FormData();
+    Object.keys(formdata).forEach((key) => {
+      if (Array.isArray(formdata[key])) {
+        formData.append(key, JSON.stringify(formdata[key]));
+      } else {
+        formData.append(key, formdata[key]);
+      }
+    });
+
+    formData.append("file", thumbnail);
+    const response = await axios.post(
+      "http://localhost:4000/api/recruiter/createjob",
+      formData
+    );
+    console.log(response);
   };
   return (
     <div className="">

@@ -75,7 +75,9 @@ export const updateProfile = async (req, res) => {
     if (jobSeekerExist) {
       jobSeekerExist.experience = experience;
       jobSeekerExist.skills = skills;
-      jobSeekerExist.resume = req.file.filename;
+      if (req.file) {
+        jobSeekerExist.resume = req.file.filename;
+      }
       jobSeekerExist.description = description;
       await jobSeekerExist.save();
       return res.status(200).json({
