@@ -1,30 +1,63 @@
-export const createJob = async (req, res) => {
-  console.log(
-    "createJob request ================================================================="
-  );
-  try {
-    const { title, description, jobType, salary, thumbnail, location } =
-      req.body;
+import mongoose from "mongoose";
+import Job from "../models/jobSchema.js";
 
-    console.log(req.body);
-    console.log(req?.file);
+export const createJob = async (req, res) => {
+  try {
+    const {
+      title,
+      description,
+      jobType,
+      salary,
+      location,
+      vaccancy,
+      skillsRequired,
+      applicationDeadLine,
+    } = req.body;
+
+    console.log(req.file);
+
+    console.log(
+      req.body,
+      "================================================================ req body"
+    );
+
+    if (!req.body.id || !applicationDeadLine) {
+      return res.status(400).json({
+        success: false,
+        message: "Missing id or application deadline",
+      });
+    }
+
+    console.log(req.file.filename, "file naame of the file");
 
     const newJob = new Job({
       title,
       description,
       jobType,
-      salary,
-      thumbnail: req?.file?.filename,
+      salary: parseInt(salary),
+      thumbnail: req.file.filename,
       location,
-      recruiter: req.user._id,
+      postedBy: mongoose.Types.ObjectId(req.body.id),
+      vaccancy: parseInt(vaccancy),
+      skillsRequired: JSON.parse(skillsRequired) || [],
+
+      applicationDeadLine: new Date(applicationDeadLine),
+      status: "Open",
     });
+
+    console.log("lskjdlf");
 
     await newJob.save();
 
-    return res.status(201).json({ success: true, message: "Job created" });
-  } catch (error) {
+    console.log(newJob);
     return res
-      .status(500)
-      .json({ success: false, message: "internal server error" });
+      .status(201)
+      .json({ success: true, message: "Job created", data: newJob });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "internal server error",
+      error: error.message,
+    });
   }
 };

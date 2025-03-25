@@ -53,7 +53,7 @@ const Sidebar = () => {
       {userData && userData.role === "recruiter" ? (
         <div className="flex flex-col justify-start items-start gap-4 w-full px-6 ">
           {recruiterList.map((item) => (
-            <Link className="w-full" to={item.href}>
+            <Link key={item.label} className="w-full" to={item.href}>
               <div className="flex justify-between  hover:text-slate-700 hover:cursor-pointer items-center gap-4 border-b pb-2 w-full my-4">
                 <h1 className="cursor-pointer  w-full transition-all ease-in-out duration-300">
                   {item.label}
@@ -66,7 +66,7 @@ const Sidebar = () => {
       ) : (
         <div className="flex flex-col justify-start items-start gap-4 w-full px-6">
           {jobSeekerList.map((item) => (
-            <Link to={item.href}>
+            <Link key={item.label} to={item.href}>
               <div className="flex justify-between hover:text-amber-200 hover:cursor-pointer items-center gap-4 border-b pb-2 w-full my-4">
                 <h1 className="cursor-pointer w-full transition-all ease-in-out duration-300">
                   {item.label}

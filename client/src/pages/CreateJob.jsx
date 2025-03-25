@@ -4,6 +4,7 @@ import axios from "axios";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 const CreateJob = () => {
   const { userData } = useSelector((state) => state.auth);
+  console.log(userData._id);
   console.log(userData);
   const [skillSet, setSkillSet] = useState([]);
   const [skill, setSkill] = useState("");
@@ -19,6 +20,7 @@ const CreateJob = () => {
     vaccancy: 0,
     applicationDeadLine: "",
     jobType: "",
+    id: userData?._id,
   });
 
   console.log(formdata, "");
@@ -151,8 +153,9 @@ const CreateJob = () => {
           <div className=" flex flex-col gap-1">
             <label htmlFor="">Job Type</label>
             <select onChange={handleChange} className="" name="jobType" id="">
-              <option value="Full-time">Full-Time</option>
-              <option value="Part-time">Part-Time</option>
+              <option value="">Choose Job Type</option>
+              <option value="Full-Time">Full-Time</option>
+              <option value="Part-Time">Part-Time</option>
               <option value="Contract">Contract</option>
               <option value="Internship">Internship</option>
               <option value="Freelance">Freelance</option>

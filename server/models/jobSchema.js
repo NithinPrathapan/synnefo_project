@@ -40,6 +40,7 @@ const jobSchema = new mongoose.Schema(
     },
     applicationDeadLine: {
       type: Date,
+      required: true,
     },
     status: {
       type: String,
