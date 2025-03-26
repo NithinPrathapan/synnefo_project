@@ -12,7 +12,10 @@ export const createJob = async (req, res) => {
       vaccancy,
       skillsRequired,
       applicationDeadLine,
+      id,
     } = req.body;
+
+    console.log(id,'============================= =================================================')
 
     console.log(req.file);
 
@@ -21,43 +24,63 @@ export const createJob = async (req, res) => {
       "================================================================ req body"
     );
 
-    if (!req.body.id || !applicationDeadLine) {
+    if (!id || !applicationDeadLine) {
       return res.status(400).json({
         success: false,
-        message: "Missing id or application deadline",
+        message: "Missing required fields: id or application deadline.",
       });
     }
 
-    console.log(req.file.filename, "file naame of the file");
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: "Job thumbnail is required.",
+      });
+    }
 
-    const newJob = new Job({
+    let parsedSkills = [];
+
+    try {
+      parsedSkills =
+        typeof skillsRequired === "string"
+          ? JSON.parse(skillsRequired)
+          : skillsRequired;
+      if (!Array.isArray(parsedSkills))
+        throw new Error("Invalid skills format");
+    } catch (error) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "Invalid format for skillsRequired. Must be a valid JSON array.",
+      });
+    }
+
+    const jobData = {
       title,
       description,
-      jobType,
-      salary: parseInt(salary),
       thumbnail: req.file.filename,
+      jobType,
+      salary: Number(salary) || 0,
       location,
-      postedBy: mongoose.Types.ObjectId(req.body.id),
-      vaccancy: parseInt(vaccancy),
-      skillsRequired: JSON.parse(skillsRequired) || [],
-
+      vaccancy: Number(vaccancy) || 0,
+      skillsRequired: parsedSkills,
+      postedBy: id,
       applicationDeadLine: new Date(applicationDeadLine),
       status: "Open",
-    });
+    };
 
-    console.log("lskjdlf");
+    console.log(jobData);
 
-    await newJob.save();
-
-    console.log(newJob);
+    const newJob = await Job.create(jobData);
     return res
       .status(201)
       .json({ success: true, message: "Job created", data: newJob });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({
       success: false,
       message: "internal server error",
-      error: error.message,
+      error: error,
     });
   }
 };
