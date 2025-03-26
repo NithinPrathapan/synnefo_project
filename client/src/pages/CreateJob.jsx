@@ -4,7 +4,7 @@ import axios from "axios";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 const CreateJob = () => {
   const { userData } = useSelector((state) => state.auth);
-  console.log(userData._id);
+  console.log(userData?._id);
   console.log(userData);
   const [skillSet, setSkillSet] = useState([]);
   const [skill, setSkill] = useState("");
@@ -20,7 +20,6 @@ const CreateJob = () => {
     vaccancy: 0,
     applicationDeadLine: "",
     jobType: "",
-    id: userData?._id,
   });
 
   console.log(formdata, "");
@@ -72,6 +71,7 @@ const CreateJob = () => {
     });
 
     formData.append("file", thumbnail);
+    formData.append("id", userData?._id);
     const response = await axios.post(
       "http://localhost:4000/api/recruiter/createjob",
       formData
