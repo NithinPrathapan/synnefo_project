@@ -10,6 +10,7 @@ import axios from "axios";
 import Dashboard from "./pages/Dashboard";
 import CreateJob from "./pages/CreateJob";
 import ViewProfile from "./pages/ViewProfile";
+import ViewPostedJobs from "./pages/Recruiter-pages/ViewPostedJobs";
 
 const App = () => {
   const { user, isLoaded, isSignedIn } = useUser();
@@ -97,6 +98,7 @@ const App = () => {
           <Route path="/dashboard" element={<Dashboard />}>
             <Route path="createjob" element={<CreateJob />} />
             <Route path="viewprofile" element={<ViewProfile />} />
+            <Route path="" element={<ViewPostedJobs />} />
           </Route>
         </Routes>
       </div>
