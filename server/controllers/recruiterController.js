@@ -15,7 +15,10 @@ export const createJob = async (req, res) => {
       id,
     } = req.body;
 
-    console.log(id,'============================= =================================================')
+    console.log(
+      typeof id,
+      "============================= ================================================="
+    );
 
     console.log(req.file);
 
@@ -82,5 +85,28 @@ export const createJob = async (req, res) => {
       message: "internal server error",
       error: error,
     });
+  }
+};
+
+export const getJobsPostedByRecruiter = async (req, res) => {
+  const recruiterId = req.params.id;
+  console.log(recruiterId);
+  try {
+    const jobs = await Job.find({ postedBy: recruiterId })
+
+      .populate("postedBy", "position companyDetails")
+      .select(
+        "_id title description location salary postedBy applicationDeadLine status vaccancy jobType "
+      )
+   
+
+    return res
+      .status(200)
+      .json({ success: true, message: "jobs found successfully", jobs: jobs });
+  } catch (error) {
+    console.log(error, "error file finding jobs");
+    return res
+      .status(500)
+      .json({ success: false, message: "internal server error", error: error });
   }
 };

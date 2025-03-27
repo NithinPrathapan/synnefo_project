@@ -27,6 +27,8 @@ const CreateJob = () => {
     formdata.skillsRequired = skillSet;
   }, [skillSet]);
 
+  // validate form
+
   const handleChange = (e) => {
     if (e.target.type === "file") {
       setThumbnail(e.target.files[0]);
@@ -71,7 +73,7 @@ const CreateJob = () => {
     });
 
     formData.append("file", thumbnail);
-    formData.append("id", userData?._id);
+    formData.append("id", userData?.recruiter?._id);
     const response = await axios.post(
       "http://localhost:4000/api/recruiter/createjob",
       formData
@@ -83,7 +85,9 @@ const CreateJob = () => {
       <form action="" className="flex gap-12 justify-center items-start ">
         <div className="gap-6 flex flex-col">
           <div className=" flex flex-col gap-1">
-            <label htmlFor="">Title</label>
+            <label className="" htmlFor="">
+              Title
+            </label>
             <input
               onChange={handleChange}
               id="title"
