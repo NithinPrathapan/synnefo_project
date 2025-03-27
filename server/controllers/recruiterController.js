@@ -96,9 +96,8 @@ export const getJobsPostedByRecruiter = async (req, res) => {
 
       .populate("postedBy", "position companyDetails")
       .select(
-        "_id title description location salary postedBy applicationDeadLine status vaccancy jobType "
-      )
-   
+        "_id title description location salary postedBy applicationDeadLine status vaccancy jobType thumbnail"
+      );
 
     return res
       .status(200)

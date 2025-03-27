@@ -11,6 +11,8 @@ import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const uploadFolderPath = path.join(__dirname, "uploads");
+console.log(uploadFolderPath);
 
 import { clerkMiddleware } from "@clerk/express";
 
@@ -21,7 +23,7 @@ const app = express();
 const clerkPublishableKey = process.env.CLERK_PUBLISHABLE_KEY;
 const clerkSecretKey = process.env.CLERK_SECRET_KEY;
 
-app.use(helmet());
+// app.use(helmet());
 
 // const corsOptions = {
 //   origin: "http://localhost:5173",
@@ -33,12 +35,12 @@ app.use(helmet());
 // app.use(cors(corsOptions));
 
 app.use(cors());
-app.use(clerkMiddleware());
+// app.use(clerkMiddleware());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/uploads", express.static(uploadFolderPath));
 
 app.get("/", (req, res) => {
   console.log("fn call");
