@@ -10,6 +10,8 @@ const CreateJob = () => {
   const [skill, setSkill] = useState("");
   const [thumbnail, setThumbnail] = useState(null);
 
+  const today = new Date().toISOString().split("T")[0];
+
   console.log(thumbnail);
   const [formdata, setFormdata] = useState({
     title: "",
@@ -28,6 +30,34 @@ const CreateJob = () => {
   }, [skillSet]);
 
   // validate form
+
+  const validateForm = () => {
+    
+    let tempErrors = {};
+    if (formdata.title.trim() === "" && formdata.title.length < 3)
+      tempErrors.title = "Title is required";
+
+    if (formdata.description.trim() === "" && formdata.description.length < 16)
+      tempErrors.description =
+        "Description is required should contain at least 16 characters";
+
+    if (formdata.location.trim() === "")
+      tempErrors.location = "Location is required";
+    if (formdata.skillsRequired.length === 3)
+      tempErrors.skillsRequired = "Minimum 3 skills are required";
+
+    if (formdata.salary <= 0) tempErrors.salary = "Salary is required";
+
+    if (formdata.vaccancy <= 0) tempErrors.vaccancy = "Vaccancy is required";
+
+    if (formdata.applicationDeadLine.trim() === "")
+      tempErrors.applicationDeadLine = "Application Deadline is required";
+
+    if (formdata.jobType.trim() === "")
+      tempErrors.jobType = "Job Type is required";
+
+    return;
+  };
 
   const handleChange = (e) => {
     if (e.target.type === "file") {
@@ -50,6 +80,8 @@ const CreateJob = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     // form validation and alert all fields are required before submitting
+    validateForm();
+
     if (
       Object.values(formdata).some(
         (value) =>
@@ -97,7 +129,10 @@ const CreateJob = () => {
           </div>
           <div className=" flex flex-col gap-1">
             <label htmlFor="">Description</label>
-            <input
+            <textarea
+              className="border-2 border-gray-300 py-2 px-2 rounded-md"
+              cols={30}
+              rows={5}
               onChange={handleChange}
               id="description"
               name="description"
@@ -152,6 +187,7 @@ const CreateJob = () => {
               id="applicationDeadLine"
               name="applicationDeadLine"
               type="date"
+              min={today}
             />
           </div>
           <div className=" flex flex-col gap-1">

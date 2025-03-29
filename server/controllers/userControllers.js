@@ -1,4 +1,6 @@
+import logger from "../logger.js";
 import JobSeeker from "../models/job_seekerSChema.js";
+import Job from "../models/jobSchema.js";
 import Recruiter from "../models/recruiterSchema.js";
 import User from "../models/userSchema.js";
 
@@ -164,5 +166,21 @@ export const getUserDetails = async (req, res) => {
     return res
       .status(500)
       .json({ success: false, message: "Internal server error" });
+  }
+};
+
+export const getAllJobs = async (req, res) => {
+  try {
+    logger.info("fetching all jobs...");
+    const jobs = await Job.find();
+    logger.info(`fetcheds ${jobs.length} jobs successfully  `);
+    return res
+      .status(200)
+      .json({ success: true, message: "jobs found successfully", jobs: jobs });
+  } catch (error) {
+    logger.error(`Error fetching all jobs: ${error}`);
+    return res
+      .status(500)
+      .json({ success: false, message: "internal server error", error: error });
   }
 };

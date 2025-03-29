@@ -2,6 +2,31 @@ import React, { useEffect, useState } from "react";
 
 const JobCard = ({ jobDetails }) => {
   const [imageSrc, setImageSrc] = useState("");
+  const [timeAgo, setTimeAgo] = useState("");
+
+  useEffect(() => {
+    if (jobDetails?.createdAt) {
+      const deadlineDate = new Date(jobDetails.createdAt);
+      const now = new Date();
+
+      const differenceInMs = deadlineDate - now;
+      const differenceInDays = Math.floor(
+        differenceInMs / (1000 * 60 * 60 * 24)
+      );
+
+      let timeText = "";
+
+      if (differenceInDays < 0) {
+        timeText = `${Math.abs(differenceInDays)} days ago`;
+      } else if (differenceInDays === 0) {
+        timeText = "Today";
+      } else {
+        timeText = `In ${differenceInDays} days`;
+      }
+
+      setTimeAgo(timeText);
+    }
+  }, [jobDetails]);
 
   useEffect(() => {
     if (jobDetails?.thumbnail) {
@@ -19,9 +44,8 @@ const JobCard = ({ jobDetails }) => {
 
   console.log(jobDetails);
   const companyDetail = jobDetails?.postedBy?.companyDetails;
-  console.log(jobDetails?.thumbnail);
   return (
-    <div className="max-w-[320px] mt-12 rounded-md  mx-12 flex flex-col gap-4 bg-[#000] p-4 py-6">
+    <div className="max-w-[320px] mt-12 rounded-md  mx-12 flex flex-col gap-4 bg-[#000000c0] p-4 py-6">
       <div className="flex items-center justify-start gap-4  max-w-[250px]">
         <img
           className="w-[50px]"
@@ -38,7 +62,10 @@ const JobCard = ({ jobDetails }) => {
       </div>
       <div>
         <h1 className="flex items-center justify-start gap-2 text-sm text-[#c4c4c4]">
-          {jobDetails?.location} <span>2 Days Ago</span> Over 100 Applicants
+          {jobDetails?.location} <span>{timeAgo}</span>{" "}
+          {jobDetails?.applicants?.length === 0
+            ? "0 applicants"
+            : jobDetails?.applicants?.length}
         </h1>
       </div>
       <div>
@@ -47,10 +74,10 @@ const JobCard = ({ jobDetails }) => {
         </h1>
       </div>
       <div className="flex items-center justify-start gap-2">
-        <h1 className="bg-teal-900 px-2 py-1 rounded-md text-white">
+        <h1 className="bg-gray-400 px-2 py-1 rounded-md text-black text-sm">
           {jobDetails?.jobType}
         </h1>
-        <h1 className="bg-teal-800 px-2 py-1 rounded-md text-white">
+        <h1 className="bg-teal-800 px-2 py-1 rounded-md text-white text-sm">
           {jobDetails?.status}
         </h1>
       </div>
