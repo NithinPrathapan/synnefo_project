@@ -7,7 +7,7 @@ body {
   overflow: scroll;
 }
 
-input   {
+input {
   padding: 8px 8px;
   outline: none;
   border: 1px solid #ccc;
@@ -153,7 +153,6 @@ input:focus {
   }
 }
 
-
 input,
 select {
   padding: 8px;
@@ -171,4 +170,16 @@ select {
 button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+body {
+  background: linear-gradient(to right, #0f0e0e, #0a1327, #15193b);
+  color: white;
+}
+
+#hero-component-container {
+  background-color: white;
+  margin: 20px;
+  height: 600px;
+  clip-path: polygon(0 0%, 100% 0%, 100% 70%, 0% 100%);
 }

@@ -32,7 +32,6 @@ const CreateJob = () => {
   // validate form
 
   const validateForm = () => {
-    
     let tempErrors = {};
     if (formdata.title.trim() === "" && formdata.title.length < 3)
       tempErrors.title = "Title is required";

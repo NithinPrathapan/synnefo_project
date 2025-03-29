@@ -45,7 +45,7 @@ const JobCard = ({ jobDetails }) => {
   console.log(jobDetails);
   const companyDetail = jobDetails?.postedBy?.companyDetails;
   return (
-    <div className="max-w-[320px] mt-12 rounded-md  mx-12 flex flex-col gap-4 bg-[#000000c0] p-4 py-6">
+    <div className="max-w-[320px] mt-12 rounded-md  mx-12 flex flex-col gap-4 bg-transparent border-[0.5px] border-slate-700 p-4 py-6">
       <div className="flex items-center justify-start gap-4  max-w-[250px]">
         <img
           className="w-[50px]"
