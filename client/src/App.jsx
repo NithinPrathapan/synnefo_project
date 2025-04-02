@@ -11,6 +11,7 @@ import Dashboard from "./pages/Dashboard";
 import CreateJob from "./pages/CreateJob";
 import ViewProfile from "./pages/ViewProfile";
 import ViewPostedJobs from "./pages/Recruiter-pages/ViewPostedJobs";
+import SplashCursor from "./components/splash-color/Splash";
 
 const App = () => {
   const { user, isLoaded, isSignedIn } = useUser();
@@ -80,9 +81,10 @@ const App = () => {
 
   return (
     <div className="relative">
+      {/* <SplashCursor /> */}
       <Navbar />
 
-      <div className="h-screen overflow-hidden ">
+      <div className="h-screen ">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route

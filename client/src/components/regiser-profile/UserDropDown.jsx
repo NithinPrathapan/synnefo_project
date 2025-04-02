@@ -8,7 +8,7 @@ const UserDropDown = ({ setShowProfile, showProfile }) => {
   return (
     <div
       className="absolute shadow-2xl border border-slate-700 my-4 rounded right-0 p-4 w-[200px]
-  flex flex-col items-start justify-start gap-4 text-lg"
+  flex flex-col items-start justify-start gap-4 text-lg z-50 text-white bg-black" 
     >
       <h1 className="font-semibold">Welcome {user.firstName} </h1>
       <Link to="/profile">

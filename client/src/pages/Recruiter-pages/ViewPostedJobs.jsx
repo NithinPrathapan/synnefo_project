@@ -22,7 +22,7 @@ const ViewPostedJobs = () => {
   }, [dispatch, userData?.recruiter?._id]);
 
   return (
-    <div className="flex">
+    <div className="flex gap-12">
       {postedJobs.map((job) => {
         return <JobCard key={job._id} jobDetails={job} />;
       })}
