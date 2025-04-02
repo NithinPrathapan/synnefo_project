@@ -23,10 +23,7 @@ export const updateProfile = async (req, res) => {
     description,
   } = req.body;
 
-  console.log(companyName);
-  console.log(req.file);
-  // console.log(req.body,'req.body ');
-  // console.log(role);
+  // console.log(req.body);
 
   try {
     const user = await User.findById(id);
@@ -47,14 +44,17 @@ export const updateProfile = async (req, res) => {
     if (role === "recruiter") {
       const recruiterExist = await Recruiter.findOne({ user: id });
       if (recruiterExist) {
+        console.log(recruiterExist, "existing recruiter data");
         recruiterExist.companyDetails.companyName = companyName;
         recruiterExist.companyDetails.website = companyWebsite;
         recruiterExist.companyDetails.location = companyLocation;
         recruiterExist.companyDetails.description = companyDescription;
+        recruiterExist.position = position;
         await recruiterExist.save();
         return res.status(200).json({
           success: true,
           message: "recruiter profile updated successfully",
+          data: recruiterExist,
         });
       }
       const recruiter = new Recruiter({
@@ -65,12 +65,13 @@ export const updateProfile = async (req, res) => {
           location: companyLocation,
           description: companyDescription,
         },
-        position: position,
+        position,
       });
       await recruiter.save();
       return res.status(200).json({
         success: true,
         message: "recruiter profile updated successfully",
+        data: recruiter,
       });
     }
     const jobSeekerExist = await JobSeeker.findOne({ user: id });

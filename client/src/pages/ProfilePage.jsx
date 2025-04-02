@@ -116,6 +116,7 @@ const ProfilePage = () => {
     }
 
     formData.append("role", role);
+    console.log(formData, "form data  submitted");
     if (role === "job_seeker") {
       formData.append("file", resume);
     }

@@ -79,7 +79,7 @@ const Home = () => {
       <div className="text-white mx-auto max-w-8/12 my-12">
         <h1 className="text-4xl font-semibold">Featured Jobs</h1>
       </div>
-      <div className="flex justify-center gap-12 items-center ">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4   gap-4 w-4/5 mx-auto">
         {jobs.map((job) => {
           return <JobCard key={job._id} jobDetails={job} />;
         })}
