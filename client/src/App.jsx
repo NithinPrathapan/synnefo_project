@@ -12,13 +12,14 @@ import CreateJob from "./pages/CreateJob";
 import ViewProfile from "./pages/ViewProfile";
 import ViewPostedJobs from "./pages/Recruiter-pages/ViewPostedJobs";
 import SplashCursor from "./components/splash-color/Splash";
+import CheckOnline from "../hoooks/CheckOnline";
 
 const App = () => {
   const { user, isLoaded, isSignedIn } = useUser();
+  const { userData } = useSelector((state) => state.auth);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  console.log(isLoaded);
-  const { userData } = useSelector((state) => state.auth);
 
   const formData = {
     firstName: user?.firstName,
@@ -30,21 +31,28 @@ const App = () => {
   };
 
   useEffect(() => {
-    if (isLoaded && isSignedIn && userData === null) {
-      addUserData();
-
-      fetchUserData();
+    if (isLoaded && isSignedIn && user) {
+      handleUserAuth();
     }
-  }, [isLoaded, isSignedIn, userData, navigate]);
+  }, [isLoaded, isSignedIn, userData]);
 
   useEffect(() => {
-    if (userData && userData !== null && userData.role === "user") {
+    if (userData?.role === "user") {
       navigate("/profile");
     }
   }, [navigate, userData]);
 
+  const handleUserAuth = async () => {
+    const existingUser = await fetchUserData();
+    if (existingUser) {
+      dispatch(setUser(existingUser));
+    } else {
+      await registerUser();
+    }
+  };
+
   // function add user data to the database
-  async function addUserData() {
+  async function registerUser() {
     try {
       const response = await fetch("http://localhost:4000/api/auth/signup", {
         method: "POST",
@@ -64,8 +72,7 @@ const App = () => {
     }
   }
 
-  // fetch user data
-
+  // fetch user data and stored inside the redux store
   const fetchUserData = async () => {
     console.log("fetch user data");
     try {
@@ -78,25 +85,17 @@ const App = () => {
       console.log("error fetching user data", error);
     }
   };
-
+  // =================================================================
   return (
     <div className="relative">
       {/* <SplashCursor /> */}
       <Navbar />
+      {/* <CheckOnline /> */}
 
       <div className="h-screen ">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route
-            path="/profile"
-            element={
-              userData?.role === "user" ? (
-                <ProfilePage />
-              ) : (
-                <Navigate to={"/dashboard"} />
-              )
-            }
-          />
+
           <Route path="/dashboard" element={<Dashboard />}>
             <Route path="createjob" element={<CreateJob />} />
             <Route path="viewprofile" element={<ViewProfile />} />

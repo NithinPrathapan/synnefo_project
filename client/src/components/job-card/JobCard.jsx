@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { CiBookmark } from "react-icons/ci";
 import { useRef, useState } from "react";
+import { useSelector } from "react-redux";
 
 const JobCard = ({
   jobDetails,
@@ -14,6 +15,8 @@ const JobCard = ({
   const [isFocused, setIsFocused] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [opacity, setOpacity] = useState(0);
+
+  const { userData } = useSelector((state) => state.auth);
 
   useEffect(() => {
     if (jobDetails?.createdAt) {
@@ -135,17 +138,29 @@ const JobCard = ({
           {jobDetails?.status}
         </h1>
       </div>
-      <div className="flex items-center justify-start gap-2">
-        <button className="cursor-pointer duration-300 ease-in transition-all bg-[#0c7ff1] hover:bg-[#004182] px-12 py-1 rounded-full text-white hover:text-[#c4c4c478]">
-          Apply
-        </button>
-        <button className="cursor-pointer duration-300 ease-in transition-all px-12 py-1 rounded-full border-[#0c7ff1] text-[#0c7ff1] hover:border-[#004182] border-2 hover:text-[#004182]">
-          Save
-        </button>
-      </div>
-      <div>
+      {userData?.role !== "recruiter" ? (
+        <div className="flex items-center justify-start gap-2">
+          <button className="cursor-pointer duration-300 ease-in transition-all bg-[#0c7ff1] hover:bg-[#004182] px-12 py-1 rounded-full text-white hover:text-[#c4c4c478]">
+            Apply
+          </button>
+          <button className="cursor-pointer duration-300 ease-in transition-all px-12 py-1 rounded-full border-[#0c7ff1] text-[#0c7ff1] hover:border-[#004182] border-2 hover:text-[#004182]">
+            Save
+          </button>
+        </div>
+      ) : (
+        <div className="flex items-center justify-start gap-2">
+          <button className="cursor-pointer duration-300 ease-in transition-all bg-[#0c7ff1] hover:bg-[#004182] px-12 py-1 rounded-full text-white hover:text-[#c4c4c478]">
+            Edit job
+          </button>
+          <button className="cursor-pointer duration-300 ease-in transition-all px-12 py-1 rounded-full border-[#0c7ff1] text-[#0c7ff1] hover:border-[#004182] border-2 hover:text-[#004182]">
+            View Applicants
+          </button>
+        </div>
+      )}
+      {/* <div>
         <p className="text-[#c4c4c4]">{jobDetails?.description}</p>
-      </div>
+      </div> */}
+      <div>{userData?.role !== "recruiter" ? <h1>View Details</h1> : <></>}</div>
     </div>
   );
 };

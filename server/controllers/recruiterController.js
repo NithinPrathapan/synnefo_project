@@ -109,3 +109,20 @@ export const getJobsPostedByRecruiter = async (req, res) => {
       .json({ success: false, message: "internal server error", error: error });
   }
 };
+
+export const editJob = async (req, res) => {
+  const { id } = req.params;
+
+  const updatedJob=await Job.aggregate([
+    
+  ])
+
+  try {
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "internal server error",
+      error: error,
+    });
+  }
+};

@@ -32,7 +32,7 @@ const ProfilePage = () => {
 
   const { isSignedIn, user, isLoaded } = useUser();
   useEffect(() => {
-    if (!isLoaded && !isSignedIn) {
+    if (!isLoaded && !isSignedIn && !user) {
       navigate("/");
     }
   });
