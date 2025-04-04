@@ -15,6 +15,7 @@ import SplashCursor from "./components/splash-color/Splash";
 import CheckOnline from "../hoooks/CheckOnline";
 import CheckAuth from "../common/CheckAuth";
 import UnauthorizedPage from "./pages/UnauthorizedPage";
+import useAppliedJobs from "./hooks/UseAppliedJobs";
 
 const App = () => {
   const { user, isLoaded, isSignedIn } = useUser();
@@ -97,7 +98,12 @@ const App = () => {
       console.log("error fetching user data", error);
     }
   };
-  // =================================================================
+
+  const jobSeekerId = userData?.jobSeeker?._id;
+  const recruiterId = userData?.recruiter?._id;
+
+  const { appliedJobs, loading, error } = useAppliedJobs(jobSeekerId);
+
   return (
     <div className="relative">
       {/* <SplashCursor /> */}
