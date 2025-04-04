@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { CiBookmark } from "react-icons/ci";
 import { useRef, useState } from "react";
 import { useSelector } from "react-redux";
+import axios from "axios";
 
 const JobCard = ({
   jobDetails,
@@ -56,7 +57,6 @@ const JobCard = ({
     }
   }, [jobDetails]);
 
-  console.log(jobDetails);
   const companyDetail = jobDetails?.postedBy?.companyDetails;
 
   // the spotlit functions
@@ -85,6 +85,19 @@ const JobCard = ({
     setOpacity(0);
   };
 
+  // handle apply job functionality to the user type if job seeker
+
+  const handleApplyJob = async (jobId) => {
+    console.log(jobId);
+
+    try {
+      const response = await axios.post(
+        `http://localhost:4000/api/job/${jobId}/${userData.jobSeeker?._id}`
+      );
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
   return (
     <div
       ref={divRef}
@@ -140,7 +153,12 @@ const JobCard = ({
       </div>
       {userData?.role !== "recruiter" ? (
         <div className="flex items-center justify-start gap-2">
-          <button className="cursor-pointer duration-300 ease-in transition-all bg-[#0c7ff1] hover:bg-[#004182] px-12 py-1 rounded-full text-white hover:text-[#c4c4c478]">
+          <button
+            onClick={() => {
+              handleApplyJob(jobDetails._id);
+            }}
+            className="cursor-pointer duration-300 ease-in transition-all bg-[#0c7ff1] hover:bg-[#004182] px-12 py-1 rounded-full text-white hover:text-[#c4c4c478]"
+          >
             Apply
           </button>
           <button className="cursor-pointer duration-300 ease-in transition-all px-12 py-1 rounded-full border-[#0c7ff1] text-[#0c7ff1] hover:border-[#004182] border-2 hover:text-[#004182]">
@@ -160,7 +178,9 @@ const JobCard = ({
       {/* <div>
         <p className="text-[#c4c4c4]">{jobDetails?.description}</p>
       </div> */}
-      <div>{userData?.role !== "recruiter" ? <h1>View Details</h1> : <></>}</div>
+      <div>
+        {userData?.role !== "recruiter" ? <h1>View Details</h1> : <></>}
+      </div>
     </div>
   );
 };

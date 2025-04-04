@@ -1,20 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { GoSidebarCollapse, GoSidebarExpand } from "react-icons/go";
 import Sidebar from "../components/sidebar/Sidebar";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { useUser } from "@clerk/clerk-react";
 
 const Dashboard = ({ children }) => {
   const { userData } = useSelector((state) => state.auth);
-  const { isSignIn, user, isLoaded } = useUser();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!isLoaded && !user) {
-      navigate("/");
-    }
-  }, []);
   return (
     <div className="flex gap-12">
       <div className="bo w-[300px] py-12 h-screen shadow-md ">

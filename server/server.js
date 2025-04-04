@@ -6,6 +6,7 @@ import cors from "cors";
 import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import recruiterRoutes from "./routes/recruiterRoutes.js";
+import jobRoutes from "./routes/jobRoutes.js";
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -48,10 +49,13 @@ app.get("/", (req, res) => {
   res.send("API is running");
 });
 
+// ROUTES
+
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/recruiter", recruiterRoutes);
-app.post("/api/upload", (req, res) => {
+app.use("/api/job", jobRoutes);
+app.use("/api/upload", (req, res) => {
   const file = req.file;
   if (!file) return res.status(400).json({ message: "file not found" });
   const { fileUrl } = `http://localhost:4000/api/uploads/${file.filename}`;

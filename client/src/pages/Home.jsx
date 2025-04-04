@@ -54,7 +54,7 @@ const Home = () => {
 
         {/* live data section */}
 
-        <div className="absolute right-12 lg:w-[420px] w-[350px]  h-[400px] bottom-14 p-4 rounded-xl  z-50 hidden md:flex">
+        <div className="absolute right-12 lg:w-[420px] w-[350px]  h-[400px] bottom-14 p-4 rounded-xl  z-20 hidden md:flex">
           <video
             className="rounded-md object-cover shadow-2xl shadow-blue-900"
             src={heroVideo}

@@ -31,9 +31,10 @@ const ProfilePage = () => {
   const diapatch = useDispatch();
 
   const { isSignedIn, user, isLoaded } = useUser();
+  console.log(user)
   useEffect(() => {
-    if (!isLoaded && !isSignedIn && !user) {
-      navigate("/");
+    if (!isLoaded || !isSignedIn || !user) {
+      navigate("/unauthorized");
     }
   });
 

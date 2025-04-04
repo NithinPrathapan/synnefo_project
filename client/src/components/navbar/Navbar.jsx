@@ -15,13 +15,13 @@ const Navbar = () => {
   const [showProfile, setShowProfile] = useState(false);
 
   return (
-    <div className="flex items-center justify-between h-16   px-12 border-b border-b-slate-600 shadow-lg">
-      <Link to="/">
+    <div className="flex justify-between items-center h-16 px-12 relative">
+      <Link className="" to="/">
         <div>
           <h1 className="text-2xl font-bold">JobX</h1>
         </div>
       </Link>
-      <div className="relative">
+      <div className="relative z-50   ">
         {isSignedIn && isLoaded ? (
           <CustomProfileIcon
             setShowProfile={setShowProfile}
@@ -30,14 +30,16 @@ const Navbar = () => {
         ) : (
           <SignInButton className="" />
         )}
-        {showProfile ? (
-          <UserDropDown
-            showProfile={showProfile}
-            setShowProfile={setShowProfile}
-          />
-        ) : (
-          <> </>
-        )}
+        <div className="absolute right-4 top-12 w-[250px]">
+          {showProfile ? (
+            <UserDropDown
+              showProfile={showProfile}
+              setShowProfile={setShowProfile}
+            />
+          ) : (
+            <> </>
+          )}
+        </div>
       </div>
     </div>
   );

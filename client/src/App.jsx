@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { SignOutButton, useUser } from "@clerk/clerk-react";
 import Navbar from "./components/navbar/Navbar";
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
@@ -13,13 +13,18 @@ import ViewProfile from "./pages/ViewProfile";
 import ViewPostedJobs from "./pages/Recruiter-pages/ViewPostedJobs";
 import SplashCursor from "./components/splash-color/Splash";
 import CheckOnline from "../hoooks/CheckOnline";
+import CheckAuth from "../common/CheckAuth";
+import UnauthorizedPage from "./pages/UnauthorizedPage";
 
 const App = () => {
   const { user, isLoaded, isSignedIn } = useUser();
+
   const { userData } = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const [isAuthenticated, setisAuthenticated] = useState(false);
 
   const formData = {
     firstName: user?.firstName,
@@ -34,16 +39,23 @@ const App = () => {
     if (isLoaded && isSignedIn && user) {
       handleUserAuth();
     }
-  }, [isLoaded, isSignedIn, userData]);
+  }, [isLoaded]);
+
+  // useEffect(() => {
+  //   if (userData?.role === "user") {
+  //     navigate("/profile");
+  //   }
+  // }, [navigate, userData]);
 
   useEffect(() => {
-    if (userData?.role === "user") {
-      navigate("/profile");
+    if (isSignedIn && isLoaded && user) {
+      setisAuthenticated(true);
     }
-  }, [navigate, userData]);
+  }, [isLoaded, isSignedIn, user]);
 
   const handleUserAuth = async () => {
     const existingUser = await fetchUserData();
+    // console.log(existingUser, "existing user");
     if (existingUser) {
       dispatch(setUser(existingUser));
     } else {
@@ -94,13 +106,21 @@ const App = () => {
 
       <div className="h-screen ">
         <Routes>
+          <Route path="*" element={<UnauthorizedPage />} />
+          {user && userData?.role === "user" && (
+            <Route path="/profile" element={<ProfilePage />} />
+          )}
           <Route path="/" element={<Home />} />
+          {/* common for every guest users not registered or not */}
 
-          <Route path="/dashboard" element={<Dashboard />}>
-            <Route path="createjob" element={<CreateJob />} />
-            <Route path="viewprofile" element={<ViewProfile />} />
-            <Route path="" element={<ViewPostedJobs />} />
-          </Route>
+          {user && userData?.role !== "" && (
+            <Route path="/dashboard" element={<Dashboard />}>
+              <Route path="" element={<ViewPostedJobs />} />
+              <Route path="createjob" element={<CreateJob />} />
+              <Route path="viewprofile" element={<ViewProfile />} />
+              <Route path="viewpostedjobs" element={<ViewPostedJobs />} />
+            </Route>
+          )}
         </Routes>
       </div>
     </div>
