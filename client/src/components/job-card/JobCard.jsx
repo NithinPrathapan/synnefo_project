@@ -95,7 +95,12 @@ const JobCard = ({
         `http://localhost:4000/api/job/${jobId}/${userData.jobSeeker?._id}`
       );
     } catch (error) {
-      console.log(error.message);
+      if (error.response && error.response.data) {
+        console.log("Error:", error.response.data.message);
+        alert(error.response.data.message);
+      } else {
+        console.log("Unexpected error:", error.message);
+      }
     }
   };
   return (

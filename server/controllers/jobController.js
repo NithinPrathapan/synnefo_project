@@ -56,13 +56,14 @@ export const applyToJob = async (req, res) => {
     }
 
     const jobSeeker = await JobSeeker.findById(jobSeekerId);
+
     if (!jobSeeker) {
       return res
         .status(404)
         .json({ success: false, message: "job seeker not found" });
     }
     if (jobSeeker.appliedJobs.includes(id)) {
-      return res.status(400).json({
+      return res.status(404).json({
         success: false,
         message: "You are already applied to this job",
       });
@@ -87,6 +88,51 @@ export const applyToJob = async (req, res) => {
       data: updatedJobSeeker,
     });
   } catch (error) {
+    return res.status(500).json({ message: "internal server error" });
+  }
+};
+
+export const findAppliedJobs = async (req, res) => {
+  try {
+    const { jobSeekerId } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(jobSeekerId)) {
+      return res.status(400).json({ message: "Invalid job seeker ID" });
+    }
+
+    const jobSeeker = await JobSeeker.aggregate([
+      {
+        $match: {
+          _id: new mongoose.Types.ObjectId(jobSeekerId),
+        },
+      },
+      {
+        $lookup: {
+          from: "jobs",
+          localField: "appliedJobs",
+          foreignField: "_id",
+          as: "appliedJobs",
+        },
+      },
+      {
+        $project: {
+          appliedJobs: 1,
+          _id: 0,
+        },
+      },
+    ]);
+
+    if (!jobSeeker.length) {
+      return res.status(404).json({ message: "Job seeker not found" });
+    }
+
+    console.log(jobSeeker, "=====================", jobSeeker[0]);
+    return res.status(200).json({
+      success: true,
+      message: "fetched applied jobs successfully",
+      data: jobSeeker,
+    });
+  } catch (error) {
+    console.log(error)
     return res.status(500).json({ message: "internal server error" });
   }
 };

@@ -1,8 +1,9 @@
 import express from "express";
-import { applyToJob } from "../controllers/jobController.js";
+import { applyToJob, findAppliedJobs } from "../controllers/jobController.js";
 
 const router = express.Router();
 
 router.post("/:id/:jobSeekerId", applyToJob);
+router.get("/:jobSeekerId", findAppliedJobs);
 
 export default router;
