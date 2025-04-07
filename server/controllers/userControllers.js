@@ -172,14 +172,13 @@ export const getUserDetails = async (req, res) => {
 
 export const getAllJobs = async (req, res) => {
   try {
-    logger.info("fetching all jobs...");
     const jobs = await Job.find();
-    logger.info(`fetcheds ${jobs.length} jobs successfully  `);
+    // logger.info(`fetcheds ${jobs.length} jobs successfully  `);
     return res
       .status(200)
       .json({ success: true, message: "jobs found successfully", jobs: jobs });
   } catch (error) {
-    logger.error(`Error fetching all jobs: ${error}`);
+    // logger.error(`Error fetching all jobs: ${error}`);
     return res
       .status(500)
       .json({ success: false, message: "internal server error", error: error });

@@ -6,6 +6,7 @@ const baseUrl = "http://localhost:4000/api";
 
 const initialState = {
   appliedJobs: [],
+  savedJobs: [],
   loading: false,
   error: null,
 };
@@ -25,6 +26,20 @@ const jobSeekerSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+
+    fetchSavedJobsStart(state, action) {
+      state.loading = true;
+      state.error = null;
+    },
+    fetchSavedJobsSuccess(state, action) {
+      console.log(action.payload);
+      state.loading = false;
+      state.savedJobs = action.payload;
+    },
+    fetchSavedJobsFailure(state, action) {
+      state.loading = false;
+      state.error = action.payload;
+    },
   },
 });
 
@@ -32,18 +47,37 @@ export const {
   fetchAppliedJobsStart,
   fetchAppliedJobsSuccess,
   fetchAppliedJobsFailure,
+  fetchSavedJobsStart,
+  fetchSavedJobsSuccess,
+  fetchSavedJobsFailure,
 } = jobSeekerSlice.actions;
 
 export const fetchAppliedJobs = (userId) => async (dispatch) => {
+  fetchAppliedJobsStart();
   try {
     if (!userId) throw new Error("userId not found in auth state");
-    const response = await axios.get(`${baseUrl}/job/${userId}`);
-    console.log(response);
+    const response = await axios.get(`${baseUrl}/job/savedJobs/${userId}`);
     dispatch(fetchAppliedJobsSuccess(response.data.jobs));
   } catch (error) {
     console.log(error);
     const errorMessage = error.message;
-    dispatch(fetchJobFailure(errorMessage));
+    dispatch(fetchAppliedJobsSuccess(errorMessage));
+  }
+};
+
+export const fetchSavedJobs = (userId) => async (dispatch) => {
+  console.log(userId);
+  fetchSavedJobsStart();
+  try {
+    if (!userId) throw new Error("userId not found in auth state");
+    const response = await axios.get(`${baseUrl}/job/savedjobs/${userId}`);
+    console.log(response);
+    console.log("response", response);
+    dispatch(fetchSavedJobsSuccess(response.data.jobs));
+  } catch (error) {
+    console.log(error);
+    const errorMessage = error.message;
+    dispatch(fetchSavedJobsFailure(errorMessage));
   }
 };
 

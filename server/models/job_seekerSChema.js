@@ -7,6 +7,7 @@ const jobSeekerSchema = new mongoose.Schema({
   resume: String,
   description: String,
   appliedJobs: [{ type: mongoose.Schema.Types.ObjectId, ref: "Job" }],
+  savedJobs: [{ type: mongoose.Schema.Types.ObjectId, ref: "Job" }],
 });
 
 const JobSeeker = mongoose.model("JobSeeker", jobSeekerSchema);

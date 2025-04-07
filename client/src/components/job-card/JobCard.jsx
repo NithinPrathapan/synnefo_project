@@ -16,9 +16,10 @@ const JobCard = ({
   const [isFocused, setIsFocused] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [opacity, setOpacity] = useState(0);
+  const [isSaved, setIsSaved] = useState(false);
 
+  const { savedJobs } = useSelector((state) => state.jobSeeker);
   const { userData } = useSelector((state) => state.auth);
-
   useEffect(() => {
     if (jobDetails?.createdAt) {
       const deadlineDate = new Date(jobDetails.createdAt);
@@ -43,6 +44,15 @@ const JobCard = ({
     }
   }, [jobDetails]);
 
+  useEffect(() => {
+    if (savedJobs) {
+      const isJobSaved = savedJobs.some(
+        (savedJob) => savedJob._id === jobDetails._id
+      );
+      console.log(isJobSaved);
+      setIsSaved(isJobSaved);
+    }
+  }, []);
   useEffect(() => {
     if (jobDetails?.thumbnail) {
       const imageUrl = `http://localhost:4000/uploads/${jobDetails.thumbnail}`;
@@ -103,6 +113,25 @@ const JobCard = ({
       }
     }
   };
+
+  const handleSaveJob = async () => {
+    console.log("inside the save job");
+    try {
+      const response = await axios.post(
+        `http://localhost:4000/api/job/savejob/${jobDetails._id}/${userData.jobSeeker?._id}`
+      );
+      console.log(response);
+    } catch (error) {
+      if (error.response && error.response.data) {
+        console.log("Error:", error.response.data.message);
+        alert(error.response.data.message);
+      } else {
+        console.log("Unexpected error:", error.message);
+      }
+    }
+  };
+
+  const { appliedJobs } = useSelector((state) => state.jobSeeker);
   return (
     <div
       ref={divRef}
@@ -159,15 +188,28 @@ const JobCard = ({
       {userData?.role !== "recruiter" ? (
         <div className="flex items-center justify-start gap-2">
           <button
-            onClick={() => {
-              handleApplyJob(jobDetails._id);
-            }}
-            className="cursor-pointer duration-300 ease-in transition-all bg-[#0c7ff1] hover:bg-[#004182] px-12 py-1 rounded-full text-white hover:text-[#c4c4c478]"
+            onClick={() => handleApplyJob(jobDetails._id)}
+            disabled={appliedJobs?.some(
+              (job) => String(job._id) === String(jobDetails?._id)
+            )}
+            className={`px-12 py-1 rounded-full text-white transition-all duration-300 ease-in 
+    ${
+      appliedJobs?.some((job) => String(job._id) === String(jobDetails?._id))
+        ? "bg-gray-400 cursor-not-allowed"
+        : "bg-[#0c7ff1] hover:bg-[#004182] hover:text-[#c4c4c478] cursor-pointer"
+    }`}
           >
-            Apply
+            {appliedJobs?.some(
+              (job) => String(job._id) === String(jobDetails?._id)
+            )
+              ? "Applied"
+              : "Apply"}
           </button>
-          <button className="cursor-pointer duration-300 ease-in transition-all px-12 py-1 rounded-full border-[#0c7ff1] text-[#0c7ff1] hover:border-[#004182] border-2 hover:text-[#004182]">
-            Save
+          <button
+            onClick={handleSaveJob}
+            className="cursor-pointer duration-300 ease-in transition-all px-12 py-1 rounded-full border-[#0c7ff1] text-[#0c7ff1] hover:border-[#004182] border-2 hover:text-[#004182]"
+          >
+            {isSaved ? "Saved" : "Save"}
           </button>
         </div>
       ) : (
@@ -184,7 +226,13 @@ const JobCard = ({
         <p className="text-[#c4c4c4]">{jobDetails?.description}</p>
       </div> */}
       <div>
-        {userData?.role !== "recruiter" ? <h1>View Details</h1> : <></>}
+        {userData?.role !== "recruiter" ? (
+          <button className="mx-auto flex ring-2 px-12 py-1 mt-2 rounded-md">
+            View Details
+          </button>
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );

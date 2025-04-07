@@ -31,10 +31,12 @@ const Sidebar = () => {
     {
       label: "View applied jobs",
       icon: <WorkIcon className="hover:text-slate-700" color="" />,
+      href: "/dashboard",
     },
     {
       label: "View saved Jobs",
       icon: <BookIcon className="hover:text-slate-700" color="" />,
+      href: "savedjobs",
     },
     {
       label: "Shortlisted by recruiter",

@@ -16,6 +16,8 @@ import CheckOnline from "../hoooks/CheckOnline";
 import CheckAuth from "../common/CheckAuth";
 import UnauthorizedPage from "./pages/UnauthorizedPage";
 import useAppliedJobs from "./hooks/UseAppliedJobs";
+import ViewAppliedJobs from "./pages/jobSeeker-pages/ViewAppliedJobs";
+import ViewSavedJobs from "./pages/jobSeeker-pages/ViewSavedJobs";
 
 const App = () => {
   const { user, isLoaded, isSignedIn } = useUser();
@@ -121,10 +123,16 @@ const App = () => {
 
           {user && userData?.role !== "" && (
             <Route path="/dashboard" element={<Dashboard />}>
-              <Route path="" element={<ViewPostedJobs />} />
+              {userData?.role === "recruiter" && (
+                <Route path="" element={<ViewPostedJobs />} />
+              )}
               <Route path="createjob" element={<CreateJob />} />
               <Route path="viewprofile" element={<ViewProfile />} />
               <Route path="viewpostedjobs" element={<ViewPostedJobs />} />
+              {userData?.role === "job_seeker" && (
+                <Route path="" element={<ViewAppliedJobs />} />
+              )}
+              <Route path="savedjobs" element={<ViewSavedJobs />} />
             </Route>
           )}
         </Routes>
