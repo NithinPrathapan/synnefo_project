@@ -113,13 +113,17 @@ const CreateJob = () => {
   };
   return (
     <div className="">
-      <form action="" className="flex gap-12 justify-center items-start ">
-        <div className="gap-6 flex flex-col">
-          <div className=" flex flex-col gap-1">
+      <form
+        action=""
+        className="w-full sm:w-4/5 md:w-3/5 mx-auto lg:flex gap-6  lg:justify-evenly"
+      >
+        <div className="gap-6 flex flex-col justify-center">
+          <div className=" flex flex-col   gap-1">
             <label className="" htmlFor="">
               Title
             </label>
             <input
+              className="border-2 border-gray-300 py-2 px-2 rounded-md outline-none"
               onChange={handleChange}
               id="title"
               name="title"
@@ -129,7 +133,7 @@ const CreateJob = () => {
           <div className=" flex flex-col gap-1">
             <label htmlFor="">Description</label>
             <textarea
-              className="border-2 border-gray-300 py-2 px-2 rounded-md"
+              className="border-2 border-gray-300 py-2 px-2 rounded-md outline-none"
               cols={30}
               rows={5}
               onChange={handleChange}
@@ -141,6 +145,7 @@ const CreateJob = () => {
           <div className=" flex flex-col gap-1">
             <label htmlFor="">Location</label>
             <input
+              className="border-2 border-gray-300 py-2 px-2 rounded-md outline-none"
               onChange={handleChange}
               id="location"
               name="location"
@@ -151,8 +156,8 @@ const CreateJob = () => {
             <label htmlFor="">Skills Required</label>
             <div className="w-full flex border  items-center justify-center rounded-md group ">
               <input
+                className="border-2 border-gray-300 py-2 px-2 rounded-md outline-none"
                 onChange={(e) => setSkill(e.target.value)}
-                className=" "
                 type="text"
                 name="skill"
                 value={skill}
@@ -182,6 +187,7 @@ const CreateJob = () => {
           <div className=" flex flex-col gap-1">
             <label htmlFor="">Application DeadLine</label>
             <input
+              className="border-2 border-gray-300 py-2 px-2 rounded-md outline-none"
               onChange={handleChange}
               id="applicationDeadLine"
               name="applicationDeadLine"
@@ -191,18 +197,36 @@ const CreateJob = () => {
           </div>
           <div className=" flex flex-col gap-1">
             <label htmlFor="">Job Type</label>
-            <select onChange={handleChange} className="" name="jobType" id="">
-              <option value="">Choose Job Type</option>
-              <option value="Full-Time">Full-Time</option>
-              <option value="Part-Time">Part-Time</option>
-              <option value="Contract">Contract</option>
-              <option value="Internship">Internship</option>
-              <option value="Freelance">Freelance</option>
+            <select
+              onChange={handleChange}
+              className="border-2 border-gray-300 py-2 px-2  rounded-md outline-none "
+              name="jobType"
+              id=""
+            >
+              <option className="bg-blue-950 " value="">
+                Choose Job Type
+              </option>
+              <option className="bg-blue-950 " value="Full-Time">
+                Full-Time
+              </option>
+              <option className="bg-blue-950 " value="Part-Time">
+                Part-Time
+              </option>
+              <option className="bg-blue-950 " value="Contract">
+                Contract
+              </option>
+              <option className="bg-blue-950 " value="Internship">
+                Internship
+              </option>
+              <option className="bg-blue-950 " value="Freelance">
+                Freelance
+              </option>
             </select>
           </div>
           <div className=" flex flex-col gap-1">
             <label htmlFor="">Thumbnail</label>
             <input
+              className="border-2 border-gray-300 py-2 px-2 rounded-md outline-none"
               onChange={handleChange}
               id="thumbnail"
               name="thumbnail"
@@ -212,6 +236,7 @@ const CreateJob = () => {
           <div className=" flex flex-col gap-1">
             <label htmlFor="">Salary</label>
             <input
+              className="border-2 border-gray-300 py-2 px-2 rounded-md outline-none"
               onChange={handleChange}
               id="salary"
               name="salary"
@@ -221,6 +246,7 @@ const CreateJob = () => {
           <div className=" flex flex-col gap-1">
             <label htmlFor="">Vaccancy</label>
             <input
+              className="border-2 border-gray-300 py-2 px-2 rounded-md outline-none"
               onChange={handleChange}
               id="vaccancy"
               name="vaccancy"
@@ -231,7 +257,7 @@ const CreateJob = () => {
       </form>
       <button
         onClick={handleSubmit}
-        className="flex items-center justify-center mx-auto my-12 w-[400px] bg-black py-2 rounded-md text-white font-semibold"
+        className="flex items-center justify-center mx-auto my-12 w-[400px] bg-black py-3 cursor-pointer hover:bg-[#0000009c] rounded-md text-white font-semibold"
       >
         Create job
       </button>

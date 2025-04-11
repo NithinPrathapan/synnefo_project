@@ -18,11 +18,15 @@ import UnauthorizedPage from "./pages/UnauthorizedPage";
 import useAppliedJobs from "./hooks/UseAppliedJobs";
 import ViewAppliedJobs from "./pages/jobSeeker-pages/ViewAppliedJobs";
 import ViewSavedJobs from "./pages/jobSeeker-pages/ViewSavedJobs";
+import { fetchSavedJobs } from "./store/jobSeekerSlice";
 
 const App = () => {
   const { user, isLoaded, isSignedIn } = useUser();
 
   const { userData } = useSelector((state) => state.auth);
+
+  const jobSeekerId = userData?.jobSeeker?._id;
+  const recruiterId = userData?.recruiter?._id;
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -43,6 +47,12 @@ const App = () => {
       handleUserAuth();
     }
   }, [isLoaded]);
+
+  useEffect(() => {
+    if (userData && isLoaded && jobSeekerId) {
+      dispatch(fetchSavedJobs(jobSeekerId));
+    }
+  }, [userData, isLoaded, jobSeekerId]);
 
   // useEffect(() => {
   //   if (userData?.role === "user") {
@@ -100,9 +110,6 @@ const App = () => {
       console.log("error fetching user data", error);
     }
   };
-
-  const jobSeekerId = userData?.jobSeeker?._id;
-  const recruiterId = userData?.recruiter?._id;
 
   const { appliedJobs, loading, error } = useAppliedJobs(jobSeekerId);
 

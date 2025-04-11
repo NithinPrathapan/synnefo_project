@@ -1,7 +1,7 @@
 import { useUser } from "@clerk/clerk-react";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 const ProfilePage = () => {
   const { userData } = useSelector((state) => state.auth);
@@ -31,7 +31,7 @@ const ProfilePage = () => {
   const diapatch = useDispatch();
 
   const { isSignedIn, user, isLoaded } = useUser();
-  console.log(user)
+  console.log(user);
   useEffect(() => {
     if (!isLoaded || !isSignedIn || !user) {
       navigate("/unauthorized");
@@ -134,7 +134,7 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className="flex justify-between  mt-12">
+    <div className="flex justify-between  mb-12 max-w-7xl mx-auto ">
       <div className="w-full flex flex-col gap-4 ">
         {/* left section */}
         <h1 className="text-2xl font-semibold uppercase">Update Profile</h1>
@@ -163,7 +163,7 @@ const ProfilePage = () => {
             <input
               onChange={handleChange}
               type="text"
-              className="w-[90%] md:w-[80%]"
+              className="w-full sm:w-4/5 md:w-3/5 outline-none border-2 border-white px-6 py-2 rounded-md "
               name="country"
               placeholder="country"
               value={upDatedData.country}
@@ -174,7 +174,7 @@ const ProfilePage = () => {
             <input
               onChange={handleChange}
               type="text"
-              className="w-[90%] md:w-[80%]"
+              className="w-full sm:w-4/5 md:w-3/5 outline-none border-2 border-white px-6 py-2 rounded-md "
               name="state"
               placeholder="state"
               value={upDatedData.state}
@@ -185,7 +185,7 @@ const ProfilePage = () => {
             <input
               onChange={handleChange}
               type="text"
-              className="w-[90%] md:w-[80%]"
+              className="w-full sm:w-4/5 md:w-3/5 outline-none border-2 border-white px-6 py-2 rounded-md "
               name="city"
               placeholder="city"
               value={upDatedData.city}
@@ -199,7 +199,7 @@ const ProfilePage = () => {
               <h2 className="text-2xl font-semibold">Company Details</h2>
               <input
                 onChange={handleChange}
-                className="w-[90%] md:w-[80%]"
+                className="w-full sm:w-4/5 md:w-3/5 outline-none border-2 border-white px-6 py-2 rounded-md "
                 type="text"
                 name="companyName"
                 placeholder="Company Name"
@@ -210,7 +210,7 @@ const ProfilePage = () => {
               )}
               <input
                 onChange={handleChange}
-                className="w-[90%] md:w-[80%]"
+                className="w-full sm:w-4/5 md:w-3/5 outline-none border-2 border-white px-6 py-2 rounded-md "
                 type="text"
                 name="companyWebsite"
                 placeholder="Company Website"
@@ -221,7 +221,7 @@ const ProfilePage = () => {
               )}
               <input
                 onChange={handleChange}
-                className="w-[90%] md:w-[80%]"
+                className="w-full sm:w-4/5 md:w-3/5 outline-none border-2 border-white px-6 py-2 rounded-md "
                 type="text"
                 name="companyLocation"
                 placeholder="Company Location"
@@ -232,7 +232,7 @@ const ProfilePage = () => {
               )}
               <input
                 onChange={handleChange}
-                className="w-[90%] md:w-[80%]"
+                className="w-full sm:w-4/5 md:w-3/5 outline-none border-2 border-white px-6 py-2 rounded-md "
                 type="text"
                 name="companyDescription"
                 placeholder="Company Description"
@@ -245,7 +245,7 @@ const ProfilePage = () => {
               )}
               <input
                 onChange={handleChange}
-                className="w-[90%] md:w-[80%]"
+                className="w-full sm:w-4/5 md:w-3/5 outline-none border-2 border-white px-6 py-2 rounded-md "
                 type="text"
                 name="position"
                 placeholder="Your Position"
@@ -254,7 +254,7 @@ const ProfilePage = () => {
               {errors.position && (
                 <p className="text-red-500 text-sm">{errors.position}</p>
               )}
-              <button className="bg-black w-[90%] md:w-[80%] text-white px-4 py-2 rounded-md cursor-pointer">
+              <button className="bg-black w-full sm:w-4/5 md:w-3/5  my-4 text-white px-4 py-2 rounded-md cursor-pointer">
                 See Posted Jobs
               </button>
             </div>
@@ -263,7 +263,7 @@ const ProfilePage = () => {
               <h2 className="text-2xl font-semibold">Fill Your Details</h2>
               <input
                 onChange={handleChange}
-                className="w-[90%] md:w-[80%]"
+                className="w-full sm:w-4/5 md:w-3/5 outline-none border-2 border-white px-6 py-2 rounded-md "
                 type="text"
                 name="experience"
                 placeholder="Experience in years"
@@ -272,7 +272,7 @@ const ProfilePage = () => {
               {errors.experience && (
                 <p className="text-red-500 text-sm">{errors.experience}</p>
               )}
-              <div className="w-[90%] md:w-[80%] flex flex-col gap-1">
+              <div className=" flex flex-col gap-1">
                 <label htmlFor="resume">Resume</label>
                 <input
                   onChange={handleChange}
@@ -287,7 +287,7 @@ const ProfilePage = () => {
                 <p>{upDatedData?.resume}</p>
 
                 {userData && userData?.jobSeeker?.resume && (
-                  <div className="flex  items-center  gap-6 relative  relativeborder border">
+                  <div className="flex  items-center  gap-6   w-full sm:w-4/5 md:w-3/5  relative border-2 rounded-md">
                     <div className="w-[40px] h-[60px] text-white  bg-[#F80707] flex items-center justify-center">
                       Pdf
                     </div>
@@ -307,7 +307,7 @@ const ProfilePage = () => {
               </div>
               <input
                 onChange={handleChange}
-                className="w-[90%] md:w-[80%]"
+                className="w-full sm:w-4/5 md:w-3/5 outline-none border-2 border-white px-6 py-2 rounded-md "
                 type="text"
                 name="skills"
                 placeholder="Your Skills (comma-separated)"
@@ -318,7 +318,7 @@ const ProfilePage = () => {
               )}
               <input
                 onChange={handleChange}
-                className="w-[90%] md:w-[80%]"
+                className="w-full sm:w-4/5 md:w-3/5 outline-none border-2 border-white px-6 py-2 rounded-md "
                 type="text"
                 name="description"
                 placeholder="Description"
@@ -327,19 +327,21 @@ const ProfilePage = () => {
               {errors.description && (
                 <p className="text-red-500 text-sm">{errors.description}</p>
               )}
-              <button
-                type="button"
-                className="bg-black w-[90%] md:w-[80%] text-white px-4 py-2 rounded-md cursor-pointer"
-              >
-                See all applied jobs
-              </button>
+              <Link to="/dashboard">
+                <button
+                  type="button"
+                  className="bg-black w-full sm:w-4/5 md:w-3/5 text-white px-4 py-2 rounded-md cursor-pointer"
+                >
+                  See all applied jobs
+                </button>
+              </Link>
             </div>
           )}
           <button
             onClick={handleSubmit}
             disabled={!updateButton}
             type="submit"
-            className={`bg-black w-[90%] md:w-[80%] text-white px-4 py-2 rounded-md cursor-pointer ${
+            className={`bg-black  w-full sm:w-4/5 md:w-3/5 text-white px-4 py-2 rounded-md cursor-pointer ${
               !updateButton && "opacity-50 cursor-not-allowed"
             }`}
           >

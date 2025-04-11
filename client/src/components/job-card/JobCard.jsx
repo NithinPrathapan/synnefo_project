@@ -20,6 +20,8 @@ const JobCard = ({
 
   const { savedJobs } = useSelector((state) => state.jobSeeker);
   const { userData } = useSelector((state) => state.auth);
+  const { appliedJobs } = useSelector((state) => state.jobSeeker);
+
   useEffect(() => {
     if (jobDetails?.createdAt) {
       const deadlineDate = new Date(jobDetails.createdAt);
@@ -49,10 +51,9 @@ const JobCard = ({
       const isJobSaved = savedJobs.some(
         (savedJob) => savedJob._id === jobDetails._id
       );
-      console.log(isJobSaved);
       setIsSaved(isJobSaved);
     }
-  }, []);
+  }, [isSaved, savedJobs, jobDetails]);
   useEffect(() => {
     if (jobDetails?.thumbnail) {
       const imageUrl = `http://localhost:4000/uploads/${jobDetails.thumbnail}`;
@@ -131,7 +132,10 @@ const JobCard = ({
     }
   };
 
-  const { appliedJobs } = useSelector((state) => state.jobSeeker);
+  const handleEditjob=async()=>{
+    
+  }
+
   return (
     <div
       ref={divRef}

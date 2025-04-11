@@ -2,6 +2,12 @@ import express from "express";
 import Job from "../models/jobSchema.js";
 import mongoose from "mongoose";
 import JobSeeker from "../models/job_seekerSChema.js";
+import path from "path";
+import fs from "fs";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export const createJob = async (req, res) => {
   console.log("create job");
@@ -220,6 +226,54 @@ export const fetchSavedJobsByJobSeeker = async (req, res) => {
       jobs: appliedJobs,
     });
   } catch (error) {
+    return res.status(500).json({ message: "internal server error" });
+  }
+};
+
+export const updateJob = async (req, res) => {
+  console.log("update job route");
+  const { id } = req.params;
+  try {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid job ID" });
+    }
+
+    const job = await Job.findById(id);
+    if (!job) {
+      return res.status(404).json({ success: false, message: "Job not found" });
+    }
+    const updatedFields = { ...req.body };
+
+    console.log(job, "job found from the backend");
+
+    if (req.file) {
+      if (job.thumbnail) {
+        const oldThumbnailpath = path.join(
+          __dirname,
+          "..",
+          "uploads",
+          Job.thumbnail
+        );
+        if (fs.existsSync(oldThumbnailpath)) {
+          fs.unlinkSync(oldThumbnailpath);
+        }
+      }
+      updatedFields.thumbnail = req.file.filename;
+    }
+    const updatedJob = await Job.findByIdAndUpdate(id, updatedFields, {
+      new: true,
+      runValidators: true,
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "job updated successfully",
+      data: updatedJob,
+    });
+  } catch (error) {
+    console.log(error);
     return res.status(500).json({ message: "internal server error" });
   }
 };

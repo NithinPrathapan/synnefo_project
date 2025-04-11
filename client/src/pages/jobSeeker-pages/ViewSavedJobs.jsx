@@ -10,9 +10,6 @@ const ViewSavedJobs = () => {
 
   const userid = userData?.jobSeeker?._id;
 
-  useEffect(() => {
-    dispatch(fetchSavedJobs(userid));
-  }, [userData]);
   return (
     <div className="flex ">
       {savedJobs.map((job) => {

@@ -32,7 +32,6 @@ const jobSeekerSlice = createSlice({
       state.error = null;
     },
     fetchSavedJobsSuccess(state, action) {
-      console.log(action.payload);
       state.loading = false;
       state.savedJobs = action.payload;
     },
@@ -66,13 +65,11 @@ export const fetchAppliedJobs = (userId) => async (dispatch) => {
 };
 
 export const fetchSavedJobs = (userId) => async (dispatch) => {
-  console.log(userId);
   fetchSavedJobsStart();
   try {
     if (!userId) throw new Error("userId not found in auth state");
     const response = await axios.get(`${baseUrl}/job/savedjobs/${userId}`);
-    console.log(response);
-    console.log("response", response);
+
     dispatch(fetchSavedJobsSuccess(response.data.jobs));
   } catch (error) {
     console.log(error);
