@@ -113,11 +113,41 @@ export const getJobsPostedByRecruiter = async (req, res) => {
 export const editJob = async (req, res) => {
   const { id } = req.params;
 
-  const updatedJob=await Job.aggregate([
-    
-  ])
+  const updatedJob = await Job.aggregate([]);
 
   try {
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "internal server error",
+      error: error,
+    });
+  }
+};
+
+export const getApplicantsTothisJob = async (req, res) => {
+  const { id } = req.params;
+  console.log(id);
+  try {
+    const job = await Job.findById(id).populate({
+      path: "applicants",
+      select: "skills experiance resume user",
+      populate: {
+        path: "user",
+        select: "firstName lastName imageUrl phoneNumber",
+      },
+    });
+    if (!job) {
+      return res.status(404).json({
+        success: false,
+        message: "applicants not found",
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      message: "applicants found",
+      applicants: job.applicants,
+    });
   } catch (error) {
     return res.status(500).json({
       success: false,

@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import useToastNotification from "../../hooks/UseNotification";
+import { Link } from "react-router-dom";
 
 const JobCard = ({
   jobDetails,
@@ -109,7 +110,7 @@ const JobCard = ({
         `http://localhost:4000/api/job/${jobId}/${userData.jobSeeker?._id}`
       );
 
-      showToast("Success!! Applied to job",'success');
+      showToast("Success!! Applied to job", "success");
     } catch (error) {
       if (error.response && error.response.data) {
         console.log("Error:", error.response.data.message);
@@ -117,7 +118,7 @@ const JobCard = ({
       } else {
         console.log("Unexpected error:", error.message);
       }
-      showToast("Failed!!! Apply to job",'error');
+      showToast("Failed!!! Apply to job", "error");
     }
   };
 
@@ -139,6 +140,10 @@ const JobCard = ({
   };
 
   const handleEditjob = async () => {};
+
+  //! view applicants details
+
+  async function handleViewApplicants() {}
 
   return (
     <div
@@ -225,9 +230,11 @@ const JobCard = ({
           <button className="cursor-pointer duration-300 ease-in transition-all bg-[#0c7ff1] hover:bg-[#004182] px-12 py-1 rounded-full text-white hover:text-[#c4c4c478]">
             Edit job
           </button>
-          <button className="cursor-pointer duration-300 ease-in transition-all px-12 py-1 rounded-full border-[#0c7ff1] text-[#0c7ff1] hover:border-[#004182] border-2 hover:text-[#004182]">
-            View Applicants
-          </button>
+          <Link to={"/viewapplicants/" + jobDetails?._id}>
+            <button className="cursor-pointer duration-300 ease-in transition-all px-12 py-1 rounded-full border-[#0c7ff1] text-[#0c7ff1] hover:border-[#004182] border-2 hover:text-[#004182]">
+              View Applicants
+            </button>
+          </Link>
         </div>
       )}
       {/* <div>

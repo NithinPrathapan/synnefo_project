@@ -22,6 +22,7 @@ import { fetchSavedJobs } from "./store/jobSeekerSlice";
 import { Particles } from "./components/Particles";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ViewApplicants from "./pages/Recruiter-pages/ViewApplicants";
 const App = () => {
   const { user, isLoaded, isSignedIn } = useUser();
 
@@ -120,9 +121,9 @@ const App = () => {
       {/* <SplashCursor /> */}
       <ToastContainer position="top-right" autoClose={3000} />
       <Navbar />
-      <div className="absolute min-w-screen  h-screen">
+      {/* <div className="absolute min-w-screen  h-screen">
         <Particles />
-      </div>
+      </div> */}
       {/* <CheckOnline /> */}
       <div className="h-screen ">
         <Routes>
@@ -146,6 +147,10 @@ const App = () => {
               )}
               <Route path="savedjobs" element={<ViewSavedJobs />} />
             </Route>
+          )}
+
+          {user && userData?.role === "recruiter" && (
+            <Route path="viewapplicants/:id" element={<ViewApplicants />} />
           )}
         </Routes>
       </div>
