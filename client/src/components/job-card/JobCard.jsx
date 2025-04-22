@@ -3,6 +3,7 @@ import { CiBookmark } from "react-icons/ci";
 import { useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import useToastNotification from "../../hooks/UseNotification";
 
 const JobCard = ({
   jobDetails,
@@ -21,6 +22,8 @@ const JobCard = ({
   const { savedJobs } = useSelector((state) => state.jobSeeker);
   const { userData } = useSelector((state) => state.auth);
   const { appliedJobs } = useSelector((state) => state.jobSeeker);
+
+  const { showToast } = useToastNotification();
 
   useEffect(() => {
     if (jobDetails?.createdAt) {
@@ -105,6 +108,8 @@ const JobCard = ({
       const response = await axios.post(
         `http://localhost:4000/api/job/${jobId}/${userData.jobSeeker?._id}`
       );
+
+      showToast("Success!! Applied to job",'success');
     } catch (error) {
       if (error.response && error.response.data) {
         console.log("Error:", error.response.data.message);
@@ -112,6 +117,7 @@ const JobCard = ({
       } else {
         console.log("Unexpected error:", error.message);
       }
+      showToast("Failed!!! Apply to job",'error');
     }
   };
 
@@ -132,9 +138,7 @@ const JobCard = ({
     }
   };
 
-  const handleEditjob=async()=>{
-    
-  }
+  const handleEditjob = async () => {};
 
   return (
     <div

@@ -19,7 +19,9 @@ import useAppliedJobs from "./hooks/UseAppliedJobs";
 import ViewAppliedJobs from "./pages/jobSeeker-pages/ViewAppliedJobs";
 import ViewSavedJobs from "./pages/jobSeeker-pages/ViewSavedJobs";
 import { fetchSavedJobs } from "./store/jobSeekerSlice";
-
+import { Particles } from "./components/Particles";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const App = () => {
   const { user, isLoaded, isSignedIn } = useUser();
 
@@ -116,9 +118,12 @@ const App = () => {
   return (
     <div className="relative">
       {/* <SplashCursor /> */}
+      <ToastContainer position="top-right" autoClose={3000} />
       <Navbar />
+      <div className="absolute min-w-screen  h-screen">
+        <Particles />
+      </div>
       {/* <CheckOnline /> */}
-
       <div className="h-screen ">
         <Routes>
           <Route path="*" element={<UnauthorizedPage />} />
