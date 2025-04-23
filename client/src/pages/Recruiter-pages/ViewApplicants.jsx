@@ -1,8 +1,10 @@
 import axios from "axios";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import UserCard from "../../components/userCard/UserCard";
 
 const ViewApplicants = () => {
+  const [applicants, setApplicants] = useState([]);
   const { id } = useParams();
 
   useEffect(() => {
@@ -15,7 +17,8 @@ const ViewApplicants = () => {
         `http://localhost:4000/api/recruiter/viewapplicants/${id}`
       );
 
-      console.log(response);
+      console.log(response.data.applicants);
+      setApplicants(response.data.applicants);
     } catch (error) {
       console.log(error);
       if (error.response && error.response.data) {
@@ -25,7 +28,13 @@ const ViewApplicants = () => {
   }
 
   console.log(id);
-  return <div>ViewApplicants</div>;
+  return (
+    <div>
+      {applicants.map((item, index) => {
+        return <UserCard userData={item} />;
+      })}
+    </div>
+  );
 };
 
 export default ViewApplicants;

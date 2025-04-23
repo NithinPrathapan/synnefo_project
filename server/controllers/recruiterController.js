@@ -127,7 +127,6 @@ export const editJob = async (req, res) => {
 
 export const getApplicantsTothisJob = async (req, res) => {
   const { id } = req.params;
-  console.log(id);
   try {
     const job = await Job.findById(id).populate({
       path: "applicants",
