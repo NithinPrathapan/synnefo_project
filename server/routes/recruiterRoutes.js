@@ -4,6 +4,7 @@ import {
   getJobsPostedByRecruiter,
   editJob,
   getApplicantsTothisJob,
+  shortLIstOrSelectOrRejectApplicant,
 } from "../controllers/recruiterController.js";
 import upload from "../middlewares/multerConfig.js";
 
@@ -13,5 +14,6 @@ router.post("/createjob", upload.single("file"), createJob);
 router.get("/getAllJobs/:id", getJobsPostedByRecruiter);
 router.post("/editJob/:id", upload.single("file"), editJob);
 router.get("/viewapplicants/:id", getApplicantsTothisJob);
+router.post("/selectorshortlist/:jobId", shortLIstOrSelectOrRejectApplicant);
 
 export default router;

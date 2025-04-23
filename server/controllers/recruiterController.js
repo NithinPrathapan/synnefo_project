@@ -155,3 +155,62 @@ export const getApplicantsTothisJob = async (req, res) => {
     });
   }
 };
+
+export const shortLIstOrSelectOrRejectApplicant = async (req, res) => {
+  try {
+    const { jobId } = req.params;
+    const { userId, action } = req.body;
+
+    const uid = userId.toString();
+    const job = await Job.findById(jobId);
+    if (!job) {
+      return res.status(404).json({ message: "job not found" });
+    }
+
+    if (action === "shortlist") {
+      if (!job.shortlistedApplicants.includes(uid)) {
+        job.shortlistedApplicants.push(uid);
+        await job.save();
+        return res.status(200).json({
+          success: true,
+          message: "applicant shortlisted successfully",
+        });
+      } else {
+        return res.status(409).json({
+          success: false,
+          message: "Applicant already shortlisted",
+        });
+      }
+    }
+
+    if (action === "select") {
+      const isShortListed = job.shortlistedApplicants.includes(uid);
+      if (!isShortListed) {
+        const isSelected = job.selectedApplicants.includes(uid);
+        if (!isSelected) {
+          job.selectedApplicants.push(uid);
+          await job.save();
+          return res.status(200).json({
+            success: true,
+            message: "Applicant selected successfully",
+          });
+        }
+      } else {
+        job.shortlistedApplicants = job.shortlistedApplicants.filter(
+          (id) => id !== uid
+        );
+        if (!job.selectedApplicants.includes(uid)) {
+          job.selectedApplicants.push(uid);
+        }
+        await job.save();
+        return res.status(200).json({
+          success: true,
+          message: "Applicant selected successfully",
+        });
+      }
+    }
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};

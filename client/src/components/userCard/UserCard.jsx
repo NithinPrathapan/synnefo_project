@@ -1,6 +1,55 @@
+import axios from "axios";
 import React from "react";
-
+import { useParams } from "react-router-dom";
+import useToastNotification from "../../hooks/UseNotification";
 const UserCard = ({ userData }) => {
+  const { id } = useParams();
+
+  // !function to shortlist the user
+  async function handleShortList(userId) {
+    try {
+      let action = "shortlist";
+      const response = await axios.post(
+        `http://localhost:4000/api/recruiter/selectorshortlist/${id}`,
+        {
+          userId,
+          action,
+        }
+      );
+      if (response.status === 200) {
+        useToastNotification().showToast(response.data.message, "success");
+      }
+    } catch (error) {
+      console.log(error, "eroor");
+      if (error.response && error.response.data) {
+        console.log(error.response.data.message);
+        useToastNotification().showToast(error.response.data.message, "error");
+      }
+    }
+  }
+
+  async function handleSelect(userId) {
+    try {
+      let action = "select";
+      const response = await axios.post(
+        `http://localhost:4000/api/recruiter/selectorshortlist/${id}`,
+        {
+          userId,
+          action,
+        }
+      );
+      if (response.status === 200) {
+        useToastNotification().showToast(response.data.message, "success");
+      }
+    } catch (error) {
+      console.log(error, "eroor");
+      if (error.response && error.response.data) {
+        console.log(error.response.data.message);
+        useToastNotification().showToast(error.response.data.message, "error");
+      }
+    }
+  }
+  console.log(id);
   return (
     <div className="bg-[#f3f4fa] text-black flex items-center justify-between p-4  mx-auto">
       <img width={25} src={userData?.user?.imageUrl} alt="" />
@@ -32,10 +81,20 @@ const UserCard = ({ userData }) => {
         })}
       </div>
       <div className="flex items-center gap-2">
-        <button className="bg-yellow-700 text-white font-semibold px-2 py-1 rounded-md cursor-pointer">
+        <button
+          onClick={(e) => {
+            handleShortList(userData._id);
+          }}
+          className="bg-yellow-700 text-white font-semibold px-2 py-1 rounded-md cursor-pointer"
+        >
           Shortlist
         </button>
-        <button className="bg-green-400 text-white font-semibold px-2 py-1 rounded-md cursor-pointer">
+        <button
+          onClick={(e) => {
+            handleSelect(userData._id);
+          }}
+          className="bg-green-400 text-white font-semibold px-2 py-1 rounded-md cursor-pointer"
+        >
           Select
         </button>
         <button className="bg-black text-white font-semibold px-2 py-1 rounded-md cursor-pointer">

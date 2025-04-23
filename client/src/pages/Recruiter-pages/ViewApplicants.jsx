@@ -31,7 +31,7 @@ const ViewApplicants = () => {
   return (
     <div>
       {applicants.map((item, index) => {
-        return <UserCard userData={item} />;
+        return <UserCard key={index} userData={item} />;
       })}
     </div>
   );
