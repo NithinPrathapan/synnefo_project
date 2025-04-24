@@ -166,25 +166,31 @@ export const shortLIstOrSelectOrRejectApplicant = async (req, res) => {
     if (!job) {
       return res.status(404).json({ message: "job not found" });
     }
-
+    const isSelected = job.selectedApplicants.includes(uid);
     if (action === "shortlist") {
-      if (!job.shortlistedApplicants.includes(uid)) {
-        job.shortlistedApplicants.push(uid);
-        await job.save();
-        return res.status(200).json({
-          success: true,
-          message: "applicant shortlisted successfully",
-        });
+      if (!isSelected) {
+        if (!job.shortlistedApplicants.includes(uid)) {
+          job.shortlistedApplicants.push(uid);
+          await job.save();
+          return res.status(200).json({
+            success: true,
+            message: "applicant shortlisted successfully",
+          });
+        } else {
+          return res.status(409).json({
+            success: false,
+            message: "Applicant already shortlisted",
+          });
+        }
       } else {
         return res.status(409).json({
           success: false,
-          message: "Applicant already shortlisted",
+          message: "Applicant already selected",
         });
       }
     }
 
     if (action === "select") {
-      const isSelected = job.selectedApplicants.includes(uid);
       if (isSelected) {
         return res.status(409).json({
           success: false,
@@ -194,7 +200,6 @@ export const shortLIstOrSelectOrRejectApplicant = async (req, res) => {
       const isShortListed = job.shortlistedApplicants.includes(uid);
       console.log(isShortListed);
       if (!isShortListed) {
-        const isSelected = job.selectedApplicants.includes(uid);
         if (!isSelected) {
           job.selectedApplicants.push(uid);
           await job.save();
