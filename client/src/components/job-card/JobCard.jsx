@@ -227,9 +227,11 @@ const JobCard = ({
         </div>
       ) : (
         <div className="flex items-center justify-start gap-2">
-          <button className="cursor-pointer duration-300 ease-in transition-all bg-[#0c7ff1] hover:bg-[#004182] px-12 py-1 rounded-full text-white hover:text-[#c4c4c478]">
-            Edit job
-          </button>
+          <Link to={"editjob/" + jobDetails?._id}>
+            <button className="cursor-pointer duration-300 ease-in transition-all bg-[#0c7ff1] hover:bg-[#004182] px-12 py-1 rounded-full text-white hover:text-[#c4c4c478]">
+              Edit job
+            </button>
+          </Link>
           <Link to={"/viewapplicants/" + jobDetails?._id}>
             <button className="cursor-pointer duration-300 ease-in transition-all px-12 py-1 rounded-full border-[#0c7ff1] text-[#0c7ff1] hover:border-[#004182] border-2 hover:text-[#004182]">
               View Applicants
