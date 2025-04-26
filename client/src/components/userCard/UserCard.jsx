@@ -49,6 +49,27 @@ const UserCard = ({ userData }) => {
       }
     }
   }
+  async function handleReject(userId) {
+    try {
+      let action = "reject";
+      const response = await axios.post(
+        `http://localhost:4000/api/recruiter/selectorshortlist/${id}`,
+        {
+          userId,
+          action,
+        }
+      );
+      if (response.status === 200) {
+        useToastNotification().showToast(response.data.message, "success");
+      }
+    } catch (error) {
+      console.log(error, "eroor");
+      if (error.response && error.response.data) {
+        console.log(error.response.data.message);
+        useToastNotification().showToast(error.response.data.message, "error");
+      }
+    }
+  }
   console.log(id);
   return (
     <div className="bg-[#f3f4fa] text-black flex items-center justify-between p-4  mx-auto">
@@ -97,7 +118,12 @@ const UserCard = ({ userData }) => {
         >
           Select
         </button>
-        <button className="bg-black text-white font-semibold px-2 py-1 rounded-md cursor-pointer">
+        <button
+          onClick={(e) => {
+            handleReject(userData._id);
+          }}
+          className="bg-black text-white font-semibold px-2 py-1 rounded-md cursor-pointer"
+        >
           Reject
         </button>
       </div>

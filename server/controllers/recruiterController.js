@@ -190,6 +190,22 @@ export const shortLIstOrSelectOrRejectApplicant = async (req, res) => {
       }
     }
 
+    if (action === "reject") {
+      if (isSelected) {
+        job.selectedApplicants = job.selectedApplicants.filter((id) => {
+          return id.toString() !== uid;
+        });
+      }
+      job.shortlistedApplicants = job.shortlistedApplicants.filter((id) => {
+        return id.toString() !== uid;
+      });
+      await job.save();
+      return res.status(200).json({
+        success: true,
+        message: "Applicant rejected successfully",
+      });
+    }
+
     if (action === "select") {
       if (isSelected) {
         return res.status(409).json({
