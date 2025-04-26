@@ -23,6 +23,8 @@ import { Particles } from "./components/Particles";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ViewApplicants from "./pages/Recruiter-pages/ViewApplicants";
+import EditJob from "./pages/Recruiter-pages/EditJob";
+import { fetchJobs } from "./store/recruiterSlice";
 const App = () => {
   const { user, isLoaded, isSignedIn } = useUser();
 
@@ -68,6 +70,14 @@ const App = () => {
       setisAuthenticated(true);
     }
   }, [isLoaded, isSignedIn, user]);
+
+  // !recruiter data fetch
+
+  useEffect(() => {
+    if (recruiterId) {
+      dispatch(fetchJobs(recruiterId));
+    }
+  }, [recruiterId]);
 
   const handleUserAuth = async () => {
     const existingUser = await fetchUserData();
@@ -121,36 +131,48 @@ const App = () => {
       {/* <SplashCursor /> */}
       <ToastContainer position="top-right" autoClose={3000} />
       <Navbar />
-      {/* <div className="absolute min-w-screen  h-screen">
-        <Particles />
-      </div> */}
+      {/* <div className="absolute min-w-screen h-screen">
+      <Particles />
+    </div> */}
       {/* <CheckOnline /> */}
-      <div className="h-screen ">
+      <div className="h-screen">
         <Routes>
-          <Route path="*" element={<UnauthorizedPage />} />
-          {user && userData?.role === "user" && (
-            <Route path="/profile" element={<ProfilePage />} />
-          )}
+          {/* Public Routes */}
           <Route path="/" element={<Home />} />
-          {/* common for every guest users not registered or not */}
+          <Route path="*" element={<UnauthorizedPage />} />
 
-          {user && userData?.role !== "" && (
-            <Route path="/dashboard" element={<Dashboard />}>
-              {userData?.role === "recruiter" && (
-                <Route path="" element={<ViewPostedJobs />} />
-              )}
-              <Route path="createjob" element={<CreateJob />} />
-              <Route path="viewprofile" element={<ViewProfile />} />
-              <Route path="viewpostedjobs" element={<ViewPostedJobs />} />
-              {userData?.role === "job_seeker" && (
-                <Route path="" element={<ViewAppliedJobs />} />
-              )}
-              <Route path="savedjobs" element={<ViewSavedJobs />} />
-            </Route>
-          )}
+          {user && userData?.role && (
+            <>
+              <Route path="/dashboard" element={<Dashboard />}>
+                <Route path="createjob" element={<CreateJob />} />
+                <Route path="viewprofile" element={<ViewProfile />} />
+                <Route path="viewpostedjobs" element={<ViewPostedJobs />} />
+                <Route path="savedjobs" element={<ViewSavedJobs />} />
 
-          {user && userData?.role === "recruiter" && (
-            <Route path="viewapplicants/:id" element={<ViewApplicants />} />
+                {userData.role === "recruiter" && (
+                  <Route index element={<ViewPostedJobs />} />
+                )}
+                {userData.role === "job_seeker" && (
+                  <Route index element={<ViewAppliedJobs />} />
+                )}
+              </Route>
+
+              {/* Profile Page for 'user' role */}
+              {userData.role === "user" && (
+                <Route path="/profile" element={<ProfilePage />} />
+              )}
+
+              {/* Recruiter-specific Routes */}
+              {userData.role === "recruiter" && (
+                <>
+                  <Route
+                    path="viewapplicants/:id"
+                    element={<ViewApplicants />}
+                  />
+                  <Route path="editjob/:id" element={<EditJob />} />
+                </>
+              )}
+            </>
           )}
         </Routes>
       </div>
