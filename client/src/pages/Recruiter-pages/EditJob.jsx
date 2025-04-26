@@ -7,6 +7,8 @@ const EditJob = () => {
   const { id } = useParams();
   console.log(postedJobs);
 
+  const [newThumbnail, setNewThumbnail] = useState(null);
+
   const job = postedJobs.find((job) => job._id === id);
   const today = new Date().toISOString().split("T")[0];
   const [formdata, setFormdata] = useState({
@@ -18,6 +20,7 @@ const EditJob = () => {
     vaccancy: "",
     applicationDeadLine: "",
     jobType: "",
+    thumbnail: null,
   });
 
   const [skill, setSkill] = useState("");
@@ -34,6 +37,7 @@ const EditJob = () => {
         vaccancy: job.vaccancy || "",
         applicationDeadLine: job.applicationDeadLine || "",
         jobType: job.jobType || "",
+        thumbnail: job.thumbnail || null,
       });
     }
   }, [job]);
@@ -42,6 +46,7 @@ const EditJob = () => {
     const { name, value, type, files } = e.target;
     if (type === "file") {
       setThumbnail(files[0]);
+      setNewThumbnail(URL.createObjectURL(files[0]));
     } else {
       setFormdata((prev) => ({
         ...prev,
@@ -219,6 +224,26 @@ const EditJob = () => {
               name="thumbnail"
               type="file"
             />
+            <div>
+              {newThumbnail ? (
+                <img
+                  src={newThumbnail}
+                  alt="New Thumbnail Preview"
+                  width={400}
+                  className="object-cover rounded-md"
+                />
+              ) : formdata.thumbnail ? (
+                // Display the existing thumbnail from the backend if no new file is selected
+                <img
+                  src={`http://localhost:4000/uploads/${formdata.thumbnail}`}
+                  alt="Existing Thumbnail"
+                  width={400}
+                  className="object-cover rounded-md"
+                />
+              ) : (
+                <div>No Thumbnail Selected</div> // If no thumbnail exists or selected
+              )}
+            </div>
           </div>
           <div className="flex flex-col gap-1">
             <label>Salary</label>
